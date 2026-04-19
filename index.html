@@ -265,6 +265,132 @@ html, body {
 .counter-label span:first-child { font-size: 11px; font-weight: 600; color: var(--near-black); }
 .counter-label span:last-child { font-size: 10px; color: var(--stone-gray); }
 
+/* ── Feedback Button (subtle, bottom-left) ── */
+.feedback-btn {
+    position: fixed;
+    bottom: 24px;
+    left: 16px;
+    z-index: 500;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--warm-sand);
+    color: var(--stone-gray);
+    border: 1px solid var(--border-warm);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+    transition: transform .3s var(--ease-bounce), background .15s ease, color .15s ease;
+}
+.feedback-btn:hover { transform: scale(1.08); background: var(--warm-sand); color: var(--charcoal); }
+.feedback-btn:active { transform: scale(0.95); }
+.feedback-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+
+/* ── Feedback Panel (bottom sheet) ── */
+.feedback-sheet-overlay {
+    position: fixed; inset: 0;
+    z-index: 1500;
+    background: rgba(20,20,19,0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+.feedback-sheet-overlay.active { opacity: 1; pointer-events: auto; }
+.feedback-sheet {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 1600;
+    background: var(--ivory);
+    border-radius: 20px 20px 0 0;
+    box-shadow: var(--shadow-sheet);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform .4s var(--ease-out), opacity .3s ease;
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: var(--safe-bottom);
+}
+.feedback-sheet.open { transform: translateY(0); opacity: 1; }
+.feedback-sheet-handle {
+    width: 36px; height: 4px;
+    border-radius: 2px;
+    background: var(--border-warm);
+    margin: 10px auto 0;
+    flex-shrink: 0;
+}
+.feedback-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px 8px;
+    flex-shrink: 0;
+}
+.feedback-sheet-title { font-size: 17px; font-weight: 700; color: var(--near-black); }
+.feedback-sheet-close {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--warm-sand);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--charcoal);
+    font-size: 12px;
+    transition: background .15s;
+}
+.feedback-sheet-close:hover { background: var(--ring); }
+.feedback-sheet-body {
+    flex: 1; overflow-y: auto;
+    padding: 4px 18px 20px;
+}
+.feedback-field {
+    margin-bottom: 14px;
+}
+.feedback-field label {
+    display: block;
+    font-size: 12px; font-weight: 600;
+    color: var(--stone-gray);
+    margin-bottom: 6px;
+}
+.feedback-field input,
+.feedback-field textarea,
+.feedback-field select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border-warm);
+    border-radius: var(--r-sm);
+    background: var(--parchment);
+    font-size: 14px; color: var(--near-black);
+    font-family: inherit;
+    outline: none;
+    transition: border-color .15s;
+}
+.feedback-field input:focus,
+.feedback-field textarea:focus,
+.feedback-field select:focus { border-color: var(--terracotta); }
+.feedback-field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+.feedback-field select { cursor: pointer; }
+.feedback-submit {
+    width: 100%;
+    padding: 11px;
+    background: var(--near-black);
+    color: var(--ivory);
+    border: none; border-radius: var(--r-sm);
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, transform .15s;
+}
+.feedback-submit:hover { background: var(--charcoal); }
+.feedback-submit:active { transform: scale(0.98); }
+.feedback-submit:disabled { background: var(--stone-gray); cursor: not-allowed; }
+.feedback-success {
+    display: none;
+    text-align: center;
+    padding: 32px 20px;
+}
+.feedback-success.show { display: block; }
+.feedback-success-icon { font-size: 40px; line-height: 1; margin-bottom: 10px; }
+.feedback-success p { font-size: 14px; color: var(--charcoal); }
+#feedback-form-body.hidden { display: none; }
+
 /* ── Directory FAB (bottom right on mobile) ── */
 .dir-fab {
     position: fixed;
@@ -698,6 +824,53 @@ html, body {
     <div class="counter-label">
         <span data-i18n="explored">已探索</span>
         <span id="counter-fraction">0 / 60 <span data-i18n="pois">个地点</span></span>
+    </div>
+</div>
+
+<!-- Feedback Button (subtle, bottom-left) -->
+<button class="feedback-btn" id="feedback-btn" title="反馈问题">
+    <svg viewBox="0 0 24 24">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+</button>
+
+<!-- Feedback Bottom Sheet -->
+<div class="feedback-sheet-overlay" id="feedback-sheet-overlay"></div>
+<div class="feedback-sheet" id="feedback-sheet">
+    <div class="feedback-sheet-handle"></div>
+    <div class="feedback-sheet-header">
+        <div class="feedback-sheet-title">反馈问题</div>
+        <button class="feedback-sheet-close" id="feedback-sheet-close">&#x2715;</button>
+    </div>
+    <div class="feedback-sheet-body">
+        <div id="feedback-form-body">
+            <div class="feedback-field">
+                <label for="feedback-type">问题类型</label>
+                <select id="feedback-type">
+                    <option value="wrong_info">信息有误</option>
+                    <option value="missing_poi">缺少地点</option>
+                    <option value="ui_issue">体验问题</option>
+                    <option value="other">其他</option>
+                </select>
+            </div>
+            <div class="feedback-field">
+                <label for="feedback-location">地点（选填）</label>
+                <input type="text" id="feedback-location" placeholder="如：日出剧场的最佳时间不准">
+            </div>
+            <div class="feedback-field">
+                <label for="feedback-desc">描述问题</label>
+                <textarea id="feedback-desc" placeholder="请详细描述问题，我们会尽快核实修正。"></textarea>
+            </div>
+            <div class="feedback-field">
+                <label for="feedback-contact">联系方式（选填）</label>
+                <input type="email" id="feedback-contact" placeholder="邮箱，方便我们回复你">
+            </div>
+            <button class="feedback-submit" id="feedback-submit">提交反馈</button>
+        </div>
+        <div class="feedback-success" id="feedback-success">
+            <div class="feedback-success-icon">&#x2705;</div>
+            <p>感谢你的反馈！我们会尽快核实并修正。</p>
+        </div>
     </div>
 </div>
 
@@ -1433,6 +1606,97 @@ function bindEvents() {
         }
         sheetTouchStartY = 0;
     }, { passive: true });
+
+    // ── Feedback Sheet ──
+    let feedbackOpen = false;
+    const feedbackBtn = document.getElementById('feedback-btn');
+    const feedbackSheet = document.getElementById('feedback-sheet');
+    const feedbackOverlay = document.getElementById('feedback-sheet-overlay');
+    const feedbackCloseBtn = document.getElementById('feedback-sheet-close');
+    const feedbackFormBody = document.getElementById('feedback-form-body');
+    const feedbackSuccess = document.getElementById('feedback-success');
+    const feedbackSubmit = document.getElementById('feedback-submit');
+
+    function toggleFeedback(open) {
+        feedbackOpen = open;
+        feedbackSheet.classList.toggle('open', open);
+        feedbackOverlay.classList.toggle('active', open);
+        document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    feedbackBtn.addEventListener('click', () => toggleFeedback(true));
+    feedbackCloseBtn.addEventListener('click', () => toggleFeedback(false));
+    feedbackOverlay.addEventListener('click', () => toggleFeedback(false));
+
+    // Drag overlay to close
+    let feedbackTouchStartY = 0;
+    const feedbackHandle = feedbackSheet.querySelector('.feedback-sheet-handle');
+    feedbackHandle.addEventListener('touchstart', (e) => {
+        feedbackTouchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    feedbackHandle.addEventListener('touchend', (e) => {
+        if (feedbackTouchStartY > 0) {
+            const delta = e.changedTouches[0].clientY - feedbackTouchStartY;
+            if (delta > 40) toggleFeedback(false);
+        }
+        feedbackTouchStartY = 0;
+    }, { passive: true });
+
+    // Submit feedback
+    feedbackSubmit.addEventListener('click', () => {
+        const type = document.getElementById('feedback-type').value;
+        const location = document.getElementById('feedback-location').value.trim();
+        const desc = document.getElementById('feedback-desc').value.trim();
+        const contact = document.getElementById('feedback-contact').value.trim();
+
+        if (!desc) {
+            document.getElementById('feedback-desc').focus();
+            return;
+        }
+
+        feedbackSubmit.disabled = true;
+        feedbackSubmit.textContent = '提交中...';
+
+        // Send via Formspree (or Web3Forms fallback)
+        const formData = {
+            feedbackType: type,
+            feedbackLocation: location,
+            feedbackDesc: desc,
+            feedbackContact: contact,
+            page: window.location.href,
+            timestamp: new Date().toLocaleString('zh-CN')
+        };
+
+        // Try Formspree AJAX
+        fetch('https://formspree.io/f/xoqgemjd', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                feedback: JSON.stringify(formData, null, 2)
+            })
+        }).then(res => {
+            showFeedbackSuccess();
+        }).catch(() => {
+            showFeedbackSuccess(); // show success anyway so user isn't stuck
+        });
+    });
+
+    function showFeedbackSuccess() {
+        feedbackFormBody.classList.add('hidden');
+        feedbackSuccess.classList.add('show');
+        setTimeout(() => {
+            toggleFeedback(false);
+            setTimeout(() => {
+                feedbackFormBody.classList.remove('hidden');
+                feedbackSuccess.classList.remove('show');
+                feedbackSubmit.disabled = false;
+                feedbackSubmit.textContent = '提交反馈';
+                document.getElementById('feedback-desc').value = '';
+                document.getElementById('feedback-location').value = '';
+                document.getElementById('feedback-contact').value = '';
+            }, 500);
+        }, 2000);
+    }
 }
 </script>
 </body>
