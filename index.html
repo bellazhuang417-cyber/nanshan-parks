@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
 /* ==========================================
-  探索南山 v9 — 修复图标闪烁 · 羊皮纸暖调
-  Design: Anthropic Claude aesthetic
-  ========================================== */
+   探索南山 v10 — 移动端优先重新设计
+   Design: 保持羊皮纸暖调，底部抽屉交互
+   ========================================== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
 :root {
-    /* ── Claude Palette ── */
     --parchment:      #f5f4ed;
     --ivory:          #faf9f5;
     --warm-sand:      #e8e6dc;
@@ -24,11 +24,10 @@
     --border-cream:   #f0eee6;
     --border-warm:    #e8e6dc;
     --ring:           #d1cfc5;
-    --dark-surface:   #30302e;
     --terracotta:     #c96442;
     --coral:          #d97757;
 
-    /* ── POI Type Colors ── */
+    /* POI Type Colors */
     --sunrise:        #5B9BD5;
     --sunrise-glow:   rgba(91,155,213,0.30);
     --sunrise-bg:     #EEF5FB;
@@ -54,22 +53,21 @@
     --restroom-glow:  rgba(103,232,249,0.25);
     --restroom-bg:    #ECFEFF;
 
-    /* ── Layout Tokens ── */
+    /* Layout Tokens */
     --r-xs:  8px;
     --r-sm:  12px;
     --r-md:  16px;
     --r-lg:  20px;
     --r-xl:  28px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
 
-    /* ── Shadows ── */
-    --ring-sm: 0 0 0 1px var(--ring);
-    --ring-md: 0 0 0 1px var(--border-warm);
     --shadow-soft: 0 2px 16px rgba(0,0,0,0.06);
-    --shadow-card:  0 4px 24px rgba(0,0,0,0.05);
-
+    --shadow-card:  0 4px 24px rgba(0,0,0,0.08);
+    --shadow-sheet: 0 -4px 32px rgba(0,0,0,0.12);
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
     --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
 html, body {
     height: 100%;
     overflow: hidden;
@@ -78,6 +76,8 @@ html, body {
     background: var(--parchment);
     color: var(--near-black);
 }
+
+/* ── Map ── */
 #map { position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 0; }
 .leaflet-control-zoom { border: none !important; box-shadow: var(--shadow-soft) !important; border-radius: var(--r-sm) !important; overflow: hidden; }
 .leaflet-control-zoom a { width: 36px !important; height: 36px !important; line-height: 36px !important; font-size: 16px !important; color: var(--charcoal) !important; border: none !important; background: var(--ivory) !important; backdrop-filter: blur(12px); transition: background .15s ease; }
@@ -92,8 +92,6 @@ html, body {
 @keyframes pulse { 0% { transform: scale(0.85); opacity: 0.5; } 70% { transform: scale(1.3); opacity: 0; } 100% { transform: scale(1.3); opacity: 0; } }
 .marker-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; }
 .marker-dot.sunrise { background: var(--sunrise); color: var(--sunrise); box-shadow: 0 2px 8px var(--sunrise-glow), 0 0 0 3px rgba(91,155,213,0.1); }
-.marker-dot.sunrise .marker-icon { animation: sunSpin 12s linear infinite; }
-@keyframes sunSpin { to { transform: rotate(360deg); } }
 .marker-dot.sunset { background: var(--sunset); color: var(--sunset); box-shadow: 0 2px 8px var(--sunset-glow), 0 0 0 3px rgba(232,148,58,0.1); }
 .marker-dot.cycling { background: var(--cycling); color: var(--cycling); box-shadow: 0 2px 8px var(--cycling-glow), 0 0 0 3px rgba(74,222,128,0.1); }
 .marker-dot.running { background: var(--running); color: var(--running); box-shadow: 0 2px 8px var(--running-glow), 0 0 0 3px rgba(167,139,250,0.1); }
@@ -103,7 +101,6 @@ html, body {
 .marker-dot.restroom { background: var(--restroom); color: var(--restroom); box-shadow: 0 2px 8px var(--restroom-glow), 0 0 0 3px rgba(103,232,249,0.1); }
 .marker-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
 .marker-icon svg { width: 18px; height: 18px; fill: none; }
-/* 强制 SVG 可见性 — 修复图标闪烁 */
 .marker-icon svg, .child-poi-icon svg, .brand-icon svg { visibility: visible !important; opacity: 1 !important; }
 .poi-marker.explored .marker-dot { opacity: 0.4; box-shadow: none; }
 .poi-marker.explored .pulse-ring { animation: none; opacity: 0; }
@@ -113,236 +110,324 @@ html, body {
 .park-label { background: none; border: none; box-shadow: none; font-family: -apple-system, 'PingFang SC', sans-serif; font-size: 11px; font-weight: 500; color: var(--near-black); text-shadow: 0 0 8px rgba(245,244,237,1), 0 0 16px rgba(245,244,237,0.7); white-space: nowrap; padding: 1px 5px; pointer-events: none; letter-spacing: .3px; }
 
 /* ── Top Bar ── */
-.top-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--ivory); border-bottom: 1px solid var(--border-warm); }
+.top-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px 10px 16px;
+    padding-bottom: calc(10px + var(--safe-bottom));
+    background: var(--ivory);
+    border-bottom: 1px solid var(--border-warm);
+}
 .brand { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .brand-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
 .brand-icon svg { width: 20px; height: 20px; fill: none; visibility: visible !important; opacity: 1 !important; }
 .brand-text { font-size: 16px; font-weight: 600; color: var(--near-black); letter-spacing: -.2px; }
-.search-box { flex: 1; max-width: 240px; position: relative; display: flex; align-items: center; }
-.search-icon { position: absolute; left: 10px; color: var(--stone-gray); pointer-events: none; }
-.search-box input { width: 100%; padding: 8px 12px 8px 30px; border: 1px solid var(--border-warm); border-radius: var(--r-md); background: var(--warm-sand); font-size: 13px; color: var(--near-black); outline: none; transition: all .2s ease; }
-.search-box input::placeholder { color: var(--stone-gray); }
-.search-box input:focus { border-color: var(--terracotta); background: var(--ivory); box-shadow: 0 0 0 3px rgba(201,100,66,0.12); }
-.lang-btn { flex-shrink: 0; padding: 5px 12px; border: 1px solid var(--border-warm); border-radius: var(--r-sm); background: transparent; font-size: 12px; font-weight: 500; color: var(--olive-gray); cursor: pointer; transition: all .15s ease; }
-.lang-btn:hover { background: var(--warm-sand); color: var(--near-black); }
-
-/* ── Filter Bar ── */
-.filter-bar { position: fixed; top: 56px; left: 14px; z-index: 1000; display: flex; gap: 3px; padding: 4px; background: var(--ivory); border: 1px solid var(--border-warm); border-radius: var(--r-lg); max-width: calc(100vw - 140px); overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; box-shadow: var(--shadow-soft); }
-.filter-bar::-webkit-scrollbar { display: none; }
-.chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; border: none; border-radius: 16px; background: transparent; font-size: 13px; font-weight: 500; color: var(--olive-gray); cursor: pointer; transition: all .2s ease; white-space: nowrap; flex-shrink: 0; }
-.chip:hover { color: var(--near-black); background: var(--warm-sand); }
-.chip.active { background: var(--near-black); color: var(--ivory); }
-.chip.active .chip-dot { background: var(--ivory); }
-.chip-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; transition: background .15s; }
-.chip-dot.sunrise { background: var(--sunrise); }
-.chip-dot.sunset  { background: var(--sunset); }
-.chip-dot.cycling { background: var(--cycling); }
-.chip-dot.running { background: var(--running); }
-.chip-dot.sports { background: var(--sports); }
-.chip-dot.kids   { background: var(--kids); }
-.chip-dot.parking{ background: var(--parking); }
-.chip-dot.restroom{background:var(--restroom);}
-.chip-dot.all    { background: var(--stone-gray); }
-.chip-label { display: flex; align-items: center; gap: 5px; }
-.chip-count { font-size: 11px; font-weight: 500; opacity: .45; margin-left: 1px; }
-
-/* ── Directory Button ── */
-.dir-btn { display: flex; align-items: center; gap: 5px; padding: 5px 10px; background: transparent; border: 1px solid var(--border-warm); border-radius: var(--r-sm); cursor: pointer; font-size: 12px; font-weight: 500; color: var(--olive-gray); transition: all .2s ease; white-space: nowrap; flex-shrink: 0; }
-.dir-btn:hover { background: var(--warm-sand); color: var(--near-black); }
-.dir-btn.active { color: var(--terracotta); border-color: var(--terracotta); background: rgba(201,100,66,0.07); }
-.dir-btn svg { flex-shrink: 0; }
-
-/* ── Explore Counter ── */
-.explore-counter { position: fixed; top: 56px; right: 14px; z-index: 1000; display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; background: var(--ivory); border: 1px solid var(--border-warm); border-radius: var(--r-lg); cursor: default; box-shadow: var(--shadow-soft); }
-.counter-ring { position: relative; width: 34px; height: 34px; }
-.counter-ring svg { width: 34px; height: 34px; display: block; }
-#progress-ring { transition: stroke-dashoffset .6s var(--ease-bounce); }
-.counter-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--terracotta); }
-.counter-label { display: flex; flex-direction: column; line-height: 1.3; }
-.counter-label span:first-child  { font-size: 12px; font-weight: 600; color: var(--near-black); }
-.counter-label span:last-child { font-size: 10px; color: var(--stone-gray); }
-
-/* ── Directory Panel ── */
-.directory-overlay { position: fixed; inset: 0; z-index: 1800; background: rgba(20,20,19,0.06); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
-.directory-overlay.active { opacity: 1; pointer-events: auto; }
-.directory-panel { position: fixed; top: 0; left: 0; bottom: 0; z-index: 1900; width: 340px; max-width: 85vw; background: var(--ivory); border-right: 1px solid var(--border-warm); box-shadow: 4px 0 40px rgba(0,0,0,0.08); transform: translateX(-100%); opacity: 0; transition: transform .4s var(--ease-out), opacity .3s ease; display: flex; flex-direction: column; overflow: hidden; }
-.directory-panel.open { transform: translateX(0); opacity: 1; }
-.dir-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px 14px; border-bottom: 1px solid var(--border-warm); flex-shrink: 0; }
-.dir-title { font-size: 16px; font-weight: 600; color: var(--near-black); display: flex; align-items: center; gap: 8px; }
-.dir-title svg { width: 18px; height: 18px; color: var(--terracotta); fill: none; }
-.dir-close-btn { width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--warm-sand); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--olive-gray); font-size: 16px; line-height: 1; transition: background .15s; }
-.dir-close-btn:hover { background: var(--border-warm); }
-.dir-search { padding: 10px 14px; flex-shrink: 0; }
-.dir-search input { width: 100%; padding: 9px 12px 9px 34px; border: 1px solid var(--border-warm); border-radius: var(--r-sm); background: var(--warm-sand); font-size: 13px; color: var(--near-black); outline: none; transition: all .2s; }
-.dir-search input::placeholder { color: var(--stone-gray); }
-.dir-search input:focus { border-color: var(--terracotta); background: var(--ivory); box-shadow: 0 0 0 3px rgba(201,100,66,0.10); }
-.dir-search-icon { position: absolute; left: 22px; color: var(--stone-gray); pointer-events: none; font-size: 14px; }
-.dir-search-wrapper { position: relative; }
-.dir-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 4px 10px 16px; min-height: 0; }
-.dir-body::-webkit-scrollbar { width: 3px; }
-.dir-body::-webkit-scrollbar-thumb { background: var(--border-warm); border-radius: 3px; }
-
-/* ── POI CARD ── */
-.poi-card-wrap {
-    position: fixed;
-    bottom: 28px;
-    z-index: 2000;
-    width: 340px;
-    max-width: calc(100vw - 48px);
-    right: 24px;
-    transition: right .35s var(--ease-out), left .35s var(--ease-out), opacity .3s ease, transform .35s var(--ease-out);
-    opacity: 0;
-    transform: translateY(12px);
-    pointer-events: none;
-}
-body.dir-open .poi-card-wrap {
-    right: calc(340px + 24px);
-}
-.poi-card-wrap.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-.poi-card {
-    background: var(--ivory);
-    border-radius: var(--r-lg);
-    border: 1px solid var(--border-cream);
-    box-shadow: var(--shadow-card);
-    overflow: hidden;
-    animation: cardIn .35s var(--ease-out);
-}
-@keyframes cardIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-.poi-card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 16px 16px 12px;
-}
-.poi-card-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--r-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.top-bar-spacer { flex: 1; }
+.lang-btn {
     flex-shrink: 0;
+    padding: 5px 10px;
+    border: 1px solid var(--border-warm);
+    border-radius: var(--r-sm);
+    background: transparent;
+    font-size: 12px; font-weight: 500;
+    color: var(--olive-gray);
+    cursor: pointer;
+    transition: all .15s ease;
 }
-.poi-card-icon svg { width: 20px; height: 20px; fill: none; }
-.poi-card-titles { flex: 1; min-width: 0; }
-.poi-card-name {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--near-black);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3;
-}
-.poi-card-park {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 2px;
-}
-.poi-card-park svg { width: 10px; height: 10px; color: var(--stone-gray); flex-shrink: 0; fill: none; }
-.poi-card-park-name { font-size: 12px; color: var(--stone-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.poi-card-close {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: none;
-    background: var(--warm-sand);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.lang-btn:hover { background: var(--warm-sand); color: var(--near-black); }
+.menu-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border: 1px solid var(--border-warm);
+    border-radius: var(--r-sm);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     color: var(--olive-gray);
-    font-size: 15px;
-    line-height: 1;
-    transition: background .15s;
-    flex-shrink: 0;
+    transition: all .15s ease;
 }
-.poi-card-close:hover { background: var(--border-warm); }
-.poi-card-body { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 8px; }
-.poi-card-meta { display: flex; gap: 6px; flex-wrap: wrap; }
-.poi-card-badge {
+.menu-btn:hover { background: var(--warm-sand); color: var(--near-black); }
+.menu-btn.active { background: var(--near-black); color: var(--ivory); border-color: var(--near-black); }
+
+/* ── Search Row ── */
+.search-row {
+    position: fixed;
+    top: 57px;
+    left: 0; right: 0;
+    z-index: 999;
+    padding: 8px 16px;
+    background: var(--parchment);
+}
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.search-icon { position: absolute; left: 12px; color: var(--stone-gray); pointer-events: none; z-index: 1; }
+.search-box input {
+    width: 100%;
+    padding: 10px 14px 10px 38px;
+    border: 1px solid var(--border-warm);
+    border-radius: var(--r-md);
+    background: var(--ivory);
+    font-size: 14px;
+    color: var(--near-black);
+    outline: none;
+    transition: all .2s ease;
+}
+.search-box input::placeholder { color: var(--stone-gray); }
+.search-box input:focus {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 3px rgba(201,100,66,0.12);
+}
+
+/* ── Filter Bar ── */
+.filter-bar {
+    position: fixed;
+    top: 115px;
+    left: 0; right: 0;
+    z-index: 998;
+    padding: 0 16px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+.chip {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 5px 10px;
+    padding: 7px 14px;
+    border: 1px solid var(--border-warm);
     border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
+    background: var(--ivory);
+    font-size: 13px; font-weight: 500;
+    color: var(--olive-gray);
+    cursor: pointer;
+    transition: all .2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    box-shadow: var(--ring-sm);
 }
-.poi-card-badge.time { background: var(--warm-sand); color: var(--olive-gray); }
-.poi-card-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-.poi-card-badge.low    { background: var(--cycling-bg); color: #22945A; }
-.poi-card-badge.medium { background: var(--sunset-bg); color: #C67A2A; }
-.poi-card-badge.high   { background: #FEE2E2; color: #DC4545; }
-.poi-card-badge .badge-icon { width: 13px; height: 13px; }
-.poi-card-badge .badge-icon svg { width: 13px; height: 13px; fill: none; }
-.poi-card-tip {
-    display: flex;
-    gap: 10px;
-    padding: 12px 14px;
-    border-radius: var(--r-sm);
-    font-size: 13px;
-    color: var(--charcoal);
-    line-height: 1.6;
-    background: var(--warm-sand);
-}
-.poi-card-tip-icon {
-    width: 18px;
-    height: 18px;
-    border-radius: 5px;
+.chip:hover { background: var(--warm-sand); color: var(--near-black); }
+.chip.active { background: var(--near-black); color: var(--ivory); border-color: var(--near-black); box-shadow: none; }
+.chip.active .chip-dot { background: var(--ivory); }
+.chip-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; transition: background .15s; flex-shrink: 0; }
+.chip-dot.sunrise  { background: var(--sunrise); }
+.chip-dot.sunset   { background: var(--sunset); }
+.chip-dot.cycling  { background: var(--cycling); }
+.chip-dot.running  { background: var(--running); }
+.chip-dot.sports   { background: var(--sports); }
+.chip-dot.kids     { background: var(--kids); }
+.chip-dot.parking  { background: var(--parking); }
+.chip-dot.restroom { background: var(--restroom); }
+.chip-dot.all      { background: var(--stone-gray); }
+.chip-label { display: flex; align-items: center; gap: 5px; }
+.chip-count { font-size: 11px; font-weight: 500; opacity: .45; }
+
+/* ── Mini Explore Counter (mobile FAB style) ── */
+.explore-counter {
+    position: fixed;
+    bottom: 24px;
+    left: 16px;
+    z-index: 500;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
+    gap: 8px;
+    padding: 8px 14px 8px 8px;
+    background: var(--ivory);
+    border: 1px solid var(--border-warm);
+    border-radius: 28px;
+    cursor: default;
+    box-shadow: var(--shadow-card);
+    transition: transform .3s var(--ease-bounce);
 }
-.poi-card-tip-icon svg { width: 11px; height: 11px; fill: none; }
-.poi-card-park-section {
-    padding-top: 10px;
-    border-top: 1px solid var(--border-warm);
+.explore-counter:active { transform: scale(0.95); }
+.counter-ring { position: relative; width: 32px; height: 32px; flex-shrink: 0; }
+.counter-ring svg { width: 32px; height: 32px; display: block; }
+#progress-ring { transition: stroke-dashoffset .6s var(--ease-bounce); }
+.counter-num {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    color: var(--terracotta);
 }
-.poi-card-park-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--stone-gray);
-    text-transform: uppercase;
-    letter-spacing: .6px;
-    margin-bottom: 5px;
-}
-.poi-card-park-desc { font-size: 12px; color: var(--olive-gray); line-height: 1.5; margin-bottom: 8px; }
-.poi-card-park-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.poi-card-park-tag {
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-size: 11px;
-    background: var(--warm-sand);
-    color: var(--olive-gray);
-}
-.dir-footer { padding: 10px 18px; border-top: 1px solid var(--border-warm); flex-shrink: 0; font-size: 11px; color: var(--stone-gray); text-align: center; letter-spacing: .2px; }
+.counter-label { display: flex; flex-direction: column; line-height: 1.25; }
+.counter-label span:first-child { font-size: 11px; font-weight: 600; color: var(--near-black); }
+.counter-label span:last-child { font-size: 10px; color: var(--stone-gray); }
 
-/* ── Park Card in Directory ── */
+/* ── Directory FAB (bottom right on mobile) ── */
+.dir-fab {
+    position: fixed;
+    bottom: 24px;
+    right: 16px;
+    z-index: 500;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--near-black);
+    color: var(--ivory);
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-card);
+    transition: transform .3s var(--ease-bounce), background .15s ease;
+}
+.dir-fab:hover { transform: scale(1.08); }
+.dir-fab:active { transform: scale(0.95); }
+.dir-fab.active {
+    background: var(--terracotta);
+    transform: scale(1.05);
+}
+.dir-fab svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+/* ── Directory Bottom Sheet ── */
+.dir-sheet-overlay {
+    position: fixed; inset: 0;
+    z-index: 1500;
+    background: rgba(20,20,19,0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+.dir-sheet-overlay.active { opacity: 1; pointer-events: auto; }
+.dir-sheet {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 1600;
+    background: var(--ivory);
+    border-radius: 20px 20px 0 0;
+    box-shadow: var(--shadow-sheet);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform .4s var(--ease-out), opacity .3s ease;
+    max-height: 78vh;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: var(--safe-bottom);
+}
+.dir-sheet.open {
+    transform: translateY(0);
+    opacity: 1;
+}
+.dir-sheet-handle {
+    width: 36px; height: 4px;
+    border-radius: 2px;
+    background: var(--border-warm);
+    margin: 10px auto 0;
+    flex-shrink: 0;
+}
+.dir-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px 8px;
+    flex-shrink: 0;
+}
+.dir-sheet-title {
+    font-size: 17px; font-weight: 700;
+    color: var(--near-black);
+}
+.dir-sheet-close {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: var(--warm-sand);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--olive-gray);
+    font-size: 18px; line-height: 1;
+    transition: background .15s;
+}
+.dir-sheet-close:hover { background: var(--border-warm); }
+.dir-sheet-search {
+    padding: 0 14px 8px;
+    flex-shrink: 0;
+}
+.dir-sheet-search input {
+    width: 100%;
+    padding: 9px 12px 9px 36px;
+    border: 1px solid var(--border-warm);
+    border-radius: var(--r-sm);
+    background: var(--warm-sand);
+    font-size: 14px; color: var(--near-black);
+    outline: none; transition: all .2s;
+}
+.dir-sheet-search input::placeholder { color: var(--stone-gray); }
+.dir-sheet-search input:focus {
+    border-color: var(--terracotta);
+    background: var(--ivory);
+    box-shadow: 0 0 0 3px rgba(201,100,66,0.10);
+}
+.dir-sheet-search-icon {
+    position: absolute; left: 22px;
+    color: var(--stone-gray);
+    pointer-events: none;
+    font-size: 14px;
+}
+.dir-sheet-search-wrap { position: relative; }
+.dir-sheet-body {
+    flex: 1; overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 10px 16px;
+    min-height: 0;
+}
+.dir-sheet-body::-webkit-scrollbar { width: 3px; }
+.dir-sheet-body::-webkit-scrollbar-thumb { background: var(--border-warm); border-radius: 3px; }
+.dir-sheet-footer {
+    padding: 8px 18px;
+    border-top: 1px solid var(--border-warm);
+    flex-shrink: 0;
+    font-size: 11px; color: var(--stone-gray);
+    text-align: center;
+}
+
+/* ── Park Card ── */
 .park-card { margin-bottom: 2px; border-radius: var(--r-sm); overflow: hidden; transition: background .15s; }
-.park-card-header { display: flex; align-items: center; justify-content: space-between; padding: 11px 12px; cursor: pointer; transition: background .15s; border-radius: var(--r-sm); user-select: none; }
+.park-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 12px;
+    cursor: pointer;
+    border-radius: var(--r-sm);
+    transition: background .15s;
+    user-select: none;
+}
 .park-card-header:hover { background: var(--warm-sand); }
 .park-card-header.selected { background: rgba(201,100,66,0.07); }
 .park-card-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-.park-card-name { font-size: 14px; font-weight: 600; color: var(--near-black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 5px; }
+.park-card-name {
+    font-size: 14px; font-weight: 600;
+    color: var(--near-black);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: flex; align-items: center; gap: 5px;
+}
 .park-card-count { font-size: 11px; color: var(--stone-gray); font-weight: 400; }
-.park-card-expand { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; color: var(--stone-gray); transition: transform .25s ease; flex-shrink: 0; }
+.park-card-expand {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--stone-gray);
+    transition: transform .25s ease; flex-shrink: 0;
+}
 .park-card-expand svg { width: 14px; height: 14px; fill: none; }
 .park-card.expanded .park-card-expand { transform: rotate(180deg); }
-.park-card-tags { display: flex; gap: 4px; flex-wrap: wrap; padding: 0 12px 8px; }
+.park-card-tags { display: flex; gap: 4px; flex-wrap: wrap; padding: 0 12px 6px; }
 .type-tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 8px; font-size: 11px; font-weight: 500; }
-.popular-badge { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; background: linear-gradient(135deg, #FF6B6B, #FF8E53); color: white; letter-spacing: .3px; white-space: nowrap; flex-shrink: 0; }
-.park-card-desc { font-size: 12px; color: var(--olive-gray); line-height: 1.5; padding: 2px 12px 6px; }
+.popular-badge {
+    display: inline-flex; align-items: center;
+    padding: 1px 6px; border-radius: 4px;
+    font-size: 10px; font-weight: 600;
+    background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+    color: white; letter-spacing: .3px;
+    white-space: nowrap; flex-shrink: 0;
+}
+.park-card-desc { font-size: 12px; color: var(--olive-gray); line-height: 1.5; padding: 2px 12px 4px; }
 .type-tag .tt-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .type-tag.sunrise  { background: var(--sunrise-bg); color: #3B82C6; }
 .type-tag.sunset   { background: var(--sunset-bg); color: #C67A2A; }
@@ -351,50 +436,220 @@ body.dir-open .poi-card-wrap {
 .type-tag.sports   { background: var(--sports-bg); color: #DB2777; }
 .type-tag.kids     { background: var(--kids-bg); color: #A16207; }
 .type-tag.parking  { background: var(--parking-bg); color: #64748B; }
-.type-tag.restroom { background: var(--restroom-bg);color:#0891B2;}
+.type-tag.restroom { background: var(--restroom-bg); color:#0891B2; }
 
 /* ── Child POI Items ── */
 .child-pois { display: none; padding: 0 12px 10px 30px; }
 .park-card.expanded .child-pois { display: block; }
-.child-poi-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; cursor: pointer; border-radius: var(--r-xs); transition: background .15s; margin-bottom: 1px; }
+.child-poi-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: var(--r-xs);
+    transition: background .15s;
+    margin-bottom: 2px;
+}
 .child-poi-item:hover { background: var(--warm-sand); }
+.child-poi-item:active { background: var(--border-warm); }
 .child-poi-item.active { background: var(--ivory); box-shadow: var(--ring-sm); }
-.child-poi-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.child-poi-icon svg { width: 13px; height: 13px; fill: none; visibility: visible !important; opacity: 1 !important; }
+.child-poi-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.child-poi-icon svg { width: 14px; height: 14px; fill: none; visibility: visible !important; opacity: 1 !important; }
 .child-poi-text { flex: 1; min-width: 0; }
-.child-poi-name { font-size: 13px; color: var(--near-black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+.child-poi-name { font-size: 14px; color: var(--near-black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; line-height: 1.3; }
 .child-poi-desc { font-size: 11px; color: var(--stone-gray); margin-top: 1px; }
 
-.no-results { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 800; padding: 14px 22px; background: var(--ivory); border-radius: var(--r-md); border: 1px solid var(--border-warm); box-shadow: var(--shadow-card); color: var(--stone-gray); font-size: 13px; text-align: center; pointer-events: none; animation: fadeInOut 2s ease forwards; }
+/* ── POI Bottom Sheet ── */
+.poi-sheet-overlay {
+    position: fixed; inset: 0;
+    z-index: 1200;
+    background: rgba(20,20,19,0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+.poi-sheet-overlay.active { opacity: 1; pointer-events: auto; }
+.poi-sheet {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 1300;
+    background: var(--ivory);
+    border-radius: 20px 20px 0 0;
+    box-shadow: var(--shadow-sheet);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform .4s var(--ease-out), opacity .3s ease;
+    max-height: 85vh;
+    display: flex; flex-direction: column;
+    padding-bottom: var(--safe-bottom);
+    overflow: hidden;
+}
+.poi-sheet.open {
+    transform: translateY(0);
+    opacity: 1;
+}
+.poi-sheet-handle {
+    width: 36px; height: 4px;
+    border-radius: 2px;
+    background: var(--border-warm);
+    margin: 10px auto 0;
+    flex-shrink: 0;
+    cursor: grab;
+}
+.poi-sheet-scroll {
+    flex: 1; overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    min-height: 0;
+}
+.poi-sheet-scroll::-webkit-scrollbar { width: 3px; }
+.poi-sheet-scroll::-webkit-scrollbar-thumb { background: var(--border-warm); border-radius: 3px; }
+.poi-sheet-header {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 18px 10px;
+    flex-shrink: 0;
+}
+.poi-sheet-icon {
+    width: 44px; height: 44px;
+    border-radius: var(--r-sm);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.poi-sheet-icon svg { width: 22px; height: 22px; fill: none; }
+.poi-sheet-titles { flex: 1; min-width: 0; padding-top: 2px; }
+.poi-sheet-name {
+    font-size: 18px; font-weight: 700;
+    color: var(--near-black);
+    line-height: 1.3;
+}
+.poi-sheet-park {
+    display: flex; align-items: center; gap: 4px;
+    margin-top: 3px;
+}
+.poi-sheet-park svg { width: 11px; height: 11px; color: var(--stone-gray); flex-shrink: 0; fill: none; }
+.poi-sheet-park-name { font-size: 13px; color: var(--stone-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.poi-sheet-close {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: var(--warm-sand);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--olive-gray);
+    font-size: 18px; line-height: 1;
+    transition: background .15s;
+    flex-shrink: 0;
+}
+.poi-sheet-close:hover { background: var(--border-warm); }
+.poi-sheet-body { padding: 0 18px 24px; display: flex; flex-direction: column; gap: 12px; }
+.poi-sheet-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.poi-sheet-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px; font-weight: 500;
+}
+.poi-sheet-badge.time { background: var(--warm-sand); color: var(--olive-gray); }
+.poi-sheet-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.poi-sheet-badge.low    { background: var(--cycling-bg); color: #22945A; }
+.poi-sheet-badge.medium { background: var(--sunset-bg); color: #C67A2A; }
+.poi-sheet-badge.high   { background: #FEE2E2; color: #DC4545; }
+.poi-sheet-badge .badge-icon { width: 14px; height: 14px; }
+.poi-sheet-badge .badge-icon svg { width: 14px; height: 14px; fill: none; }
+.poi-sheet-tip {
+    display: flex; gap: 12px;
+    padding: 14px;
+    border-radius: var(--r-sm);
+    font-size: 14px; color: var(--charcoal);
+    line-height: 1.7;
+}
+.poi-sheet-tip-icon {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+}
+.poi-sheet-tip-icon svg { width: 13px; height: 13px; fill: none; }
+.poi-sheet-park-section {
+    padding-top: 12px;
+    border-top: 1px solid var(--border-warm);
+}
+.poi-sheet-park-label {
+    font-size: 11px; font-weight: 700;
+    color: var(--stone-gray);
+    text-transform: uppercase; letter-spacing: .6px;
+    margin-bottom: 6px;
+}
+.poi-sheet-park-desc { font-size: 13px; color: var(--olive-gray); line-height: 1.6; margin-bottom: 10px; }
+.poi-sheet-park-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.poi-sheet-tag {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    background: var(--warm-sand);
+    color: var(--olive-gray);
+}
+
+/* ── Toast ── */
+.no-results {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 800;
+    padding: 14px 24px;
+    background: var(--ivory);
+    border-radius: var(--r-md);
+    border: 1px solid var(--border-warm);
+    box-shadow: var(--shadow-card);
+    color: var(--stone-gray);
+    font-size: 14px; text-align: center;
+    pointer-events: none;
+    animation: fadeInOut 2s ease forwards;
+}
 @keyframes fadeInOut { 0% { opacity: 0; transform: translate(-50%,-50%) scale(.96); } 15% { opacity: 1; transform: translate(-50%,-50%) scale(1); } 85% { opacity: 1; } 100% { opacity: 0; } }
 
-/* Responsive */
-@media (max-width: 480px) {
-    .top-bar { padding: 8px 12px; gap: 8px; }
-    .brand-text { font-size: 15px; }
-    .search-box { max-width: 140px; }
-    .search-box input { font-size: 12px; padding: 6px 10px 6px 28px; }
-    .lang-btn { padding: 4px 10px; font-size: 11px; }
-    .filter-bar { top: 52px; left: 10px; padding: 3px; }
-    .chip { padding: 5px 10px; font-size: 12px; }
-    .explore-counter { top: 52px; right: 10px; padding: 6px 10px 6px 6px; }
-    .directory-panel { width: 85vw; max-width: 320px; }
-    .poi-card-wrap {
-        left: 12px !important;
-        right: 12px !important;
-        width: auto !important;
-        bottom: 16px;
+/* ── Desktop overrides (≥ 768px) ── */
+@media (min-width: 768px) {
+    .dir-fab { display: none; }
+    .explore-counter {
+        bottom: 24px; left: 24px;
     }
+    /* On desktop, directory panel is a side drawer like v9 */
+    .dir-sheet {
+        top: 0; bottom: 0;
+        left: 0; right: auto;
+        width: 360px; max-width: 85vw;
+        border-radius: 0 20px 20px 0;
+        max-height: 100%;
+        transform: translateX(-120%);
+    }
+    .dir-sheet.open { transform: translateX(0); }
+    .dir-sheet-handle { display: none; }
+    .search-row {
+        top: 0; right: 0;
+        left: auto;
+        padding: 10px 16px;
+        background: transparent;
+        pointer-events: none;
+        width: 300px;
+    }
+    .search-box { pointer-events: auto; }
+    .search-box input {
+        background: rgba(250,249,245,0.85);
+        backdrop-filter: blur(12px);
+    }
+    .top-bar { justify-content: space-between; }
+    .top-bar-spacer { display: none; }
+    .menu-btn { display: none; }
 }
+
+/* ── Reduced Motion ── */
 @media (prefers-reduced-motion: reduce) {
-    .pulse-ring, .marker-icon, .brand-icon svg, .poi-marker { animation-duration: .01ms !important; }
-    .directory-panel, .poi-card-wrap, .poi-card { transition-duration: .01ms !important; }
+    .pulse-ring, .poi-marker { animation-duration: .01ms !important; }
+    .dir-sheet, .poi-sheet { transition-duration: .01ms !important; }
     #progress-ring { transition-duration: .01ms; }
-}
-@media (min-width: 481px) {
-    body.dir-open .top-bar { left: 340px; width: calc(100% - 340px); }
-    body.dir-open .filter-bar { left: calc(340px + 14px); }
-    body.dir-open .explore-counter { right: 14px; }
 }
 </style>
 </head>
@@ -403,25 +658,41 @@ body.dir-open .poi-card-wrap {
 
 <!-- Top Bar -->
 <div class="top-bar" id="top-bar">
-    <div class="brand"><span class="brand-icon" id="brand-icon-container"></span><span class="brand-text" data-i18n="title">探索南山</span></div>
+    <div class="brand">
+        <span class="brand-icon" id="brand-icon-container"></span>
+        <span class="brand-text" data-i18n="title">探索南山</span>
+    </div>
+    <div class="top-bar-spacer"></div>
+    <button class="lang-btn" id="lang-toggle">EN</button>
+    <button class="menu-btn" id="dir-toggle" title="公园目录">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+</div>
+
+<!-- Search Row -->
+<div class="search-row">
     <div class="search-box">
-        <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
+        </svg>
         <input type="text" id="search-input" data-i18n-placeholder="searchPlaceholder" placeholder="搜索公园或活动...">
     </div>
-    <button class="lang-btn" id="lang-toggle">EN</button>
-    <button class="dir-btn" id="dir-toggle" title="公园目录">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-        <span data-i18n="dirLabel">目录</span>
-    </button>
 </div>
 
 <!-- Filter Bar -->
 <div class="filter-bar" id="filter-bar"></div>
 
 <!-- Explore Counter -->
-<div class="explore-counter" id="explore-counter">
+<div class="explore-counter" id="explore-counter" title="探索进度">
     <div class="counter-ring">
-        <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="2"/><circle cx="18" cy="18" r="16" fill="none" stroke="#E8943A" stroke-width="2" stroke-dasharray="100.53" stroke-dashoffset="100.53" stroke-linecap="round" id="progress-ring" transform="rotate(-90 18 18)"/></svg>
+        <svg viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="16" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="2"/>
+            <circle cx="18" cy="18" r="16" fill="none" stroke="#E8943A" stroke-width="2" stroke-dasharray="100.53" stroke-dashoffset="100.53" stroke-linecap="round" id="progress-ring" transform="rotate(-90 18 18)"/>
+        </svg>
         <span class="counter-num" id="counter-num">0</span>
     </div>
     <div class="counter-label">
@@ -430,35 +701,46 @@ body.dir-open .poi-card-wrap {
     </div>
 </div>
 
-<!-- Directory Panel -->
-<div class="directory-overlay" id="directory-overlay"></div>
-<div class="directory-panel" id="directory-panel">
-    <div class="dir-header">
-        <div class="dir-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span data-i18n="dirTitle">公园目录</span>
-        </div>
-        <button class="dir-close-btn" id="dir-close">&times;</button>
+<!-- Directory FAB (mobile) -->
+<button class="dir-fab" id="dir-fab" title="公园目录">
+    <svg viewBox="0 0 24 24">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+</button>
+
+<!-- Directory Bottom Sheet -->
+<div class="dir-sheet-overlay" id="dir-sheet-overlay"></div>
+<div class="dir-sheet" id="dir-sheet">
+    <div class="dir-sheet-handle"></div>
+    <div class="dir-sheet-header">
+        <div class="dir-sheet-title" data-i18n="dirTitle">公园目录</div>
+        <button class="dir-sheet-close" id="dir-sheet-close">&#x2715;</button>
     </div>
-    <div class="dir-search">
-        <div class="dir-search-wrapper">
-            <span class="dir-search-icon">&#128269;</span>
+    <div class="dir-sheet-search">
+        <div class="dir-sheet-search-wrap">
+            <span class="dir-sheet-search-icon">&#x1F50D;</span>
             <input type="text" id="dir-search-input" data-i18n-placeholder="dirSearchPlaceholder" placeholder="搜索公园...">
         </div>
     </div>
-    <div class="dir-body" id="dir-body"></div>
-    <div class="dir-footer" id="dir-footer"></div>
+    <div class="dir-sheet-body" id="dir-sheet-body"></div>
+    <div class="dir-sheet-footer" id="dir-sheet-footer"></div>
 </div>
 
-<!-- POI Card -->
-<div class="poi-card-wrap" id="poi-card-wrap">
-    <div class="poi-card" id="poi-card"></div>
+<!-- POI Bottom Sheet -->
+<div class="poi-sheet-overlay" id="poi-sheet-overlay"></div>
+<div class="poi-sheet" id="poi-sheet">
+    <div class="poi-sheet-handle" id="poi-sheet-handle"></div>
+    <div class="poi-sheet-scroll" id="poi-sheet-scroll">
+        <div id="poi-sheet-content"></div>
+    </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 // ==========================================
-// DATA — v9 层级模式：14公园 × 多类型POI（目标~60个）
+// DATA — v10 Mobile-First Redesign
 // ==========================================
 
 const poiTypes = {
@@ -475,7 +757,7 @@ const poiTypes = {
 const parks = [
     {id:1,name:{zh:"深圳湾公园",en:"Shenzhen Bay Park"},description:{zh:"深圳湾沿岸13公里海滨长廊，是深圳最受欢迎的公园之一。",en:"13km coastal park along Shenzhen Bay, one of Shenzhen's most popular parks."},area:{zh:"13公里海岸线",en:"13km coastline"},crowd:"high",peakHours:{zh:"周末 8-11点, 16-19点",en:"Weekends 8-11 AM, 4-7 PM"},center:[22.509,113.941],pois:[
         {id:101,type:"sunrise",label:{zh:"日出剧场",en:"Sunrise Theater"},coordinates:[22.5078,113.9398],tip:{zh:"📍 位于深圳湾公园 C2 区（望海路旁），三面环山、面向大海的弧形临海草坪。地铁2号线至湾厦站转公交可达「日出剧场」站，视野开阔无遮挡。冬天云少最出片，夏天建议提前查天气预报。",en:"📍 Zone C2 of Shenzhen Bay Park (Wanghai Rd). Crescent-shaped seaside lawn surrounded by hills on three sides."},bestTime:{zh:"5:30 - 6:00（冬）/ 5:50 - 6:20（夏）",en:"5:30-6:00 (winter) / 5:50-6:20 (summer)"},crowd:"medium"},
-        {id:102,type:"sunset",label:{zh:"运动公园观海长廊",en:"Sports Park Promenade"},coordinates:[22.5102,113.9435],tip:{zh:"📍 深圳湾公园 C 区运动公园段，面向西南方向的海滨栈道。退潮时滩涂倒映落日，可同时拍到深圳湾大桥和远处香港群山。",en:"📍 Sports Park section, Zone C, facing SW. Low tide reflections with Bay Bridge + HK hills."},bestTime:{zh:"17:30 - 18:30",en:"5:30 - 6:30 PM"},crowd:"high"},
+        {id:102,type:"sunset",label:{zh:"运动公园观海长廊",en:"Sports Park Promenade"},coordinates:[22.5102,113.9435],tip:{zh:"📍 深圳湾公园 C 区运动公园段，面向西南方向的海滨栈道。退潮时滩涂倒映落日，可同时拍到深圳湾大桥和远处香港群山。",en:"📍 sports Park section, Zone C, facing SW. Low tide reflections with Bay Bridge + HK hills."},bestTime:{zh:"17:30 - 18:30",en:"5:30 - 6:30 PM"},crowd:"high"},
         {id:103,type:"cycling",label:{zh:"深圳湾滨海骑行道",en:"Shenzhen Bay Coastal Bike Path"},coordinates:[22.5115,113.9405],tip:{zh:"📍 从红树林海滨生态公园出发沿深圳湾北侧向东到大桥。全长 13km 专用绿道，全程平坦无坡度，适合各类车型。",en:"📍 From Mangrove Eco Park eastward to Bay Bridge. ~13km dedicated flat greenway."},bestTime:{zh:"7:00 - 9:00 / 16:00 - 18:00",en:"7-9 AM / 4-6 PM"},crowd:"high"},
         {id:104,type:"running",label:{zh:"深圳湾海滨跑道",en:"Shenzhen Bay Coastal Run"},coordinates:[22.5085,113.9415],tip:{zh:"📍 沿海滨栈道的塑胶跑道，从日出剧场到运动公园段约 3km。面朝大海奔跑，空气清新，是深圳跑友最爱的路线之一。",en:"📍 Rubber track along the seaside promenade. ~3km from Sunrise Theater to Sports Park. Sea breeze all the way."},bestTime:{zh:"6:30 - 8:00 / 18:00 - 20:00",en:"6:30-8 AM / 6-8 PM"},crowd:"medium"},
         {id:105,type:"kids",label:{zh:"红树林儿童乐园",en:"Mangrove Kids' Zone"},coordinates:[22.517,113.952],tip:{zh:"📍 靠近红树林生态展厅的儿童游乐区域，有沙池、滑梯和攀爬设施。周末人多，建议工作日上午前往。",en:"📍 Near Eco Exhibition Hall with sandbox, slides, and climbing structures."},bestTime:{zh:"9:00 - 11:00（工作日）",en:"9-11 AM (weekdays)"},crowd:"high"},
@@ -527,7 +809,7 @@ const parks = [
         {id:801,type:"sunrise",label:{zh:"孙中山铜像广场",en:"Sun Yat-sen Statue Plaza"},coordinates:[22.5385,113.9155],tip:{zh:"📍 古树参天的广场，晨光穿过树叶打在铜像上很美。适合慢跑热身。",en:"Ancient tree canopy, morning light through leaves on the statue is beautiful. Good for warm-up jog."},bestTime:{zh:"6:30 - 8:00",en:"6:30-8:00 AM"},crowd:"low"},
         {id:802,type:"running",label:{zh:"中山公园环湖步道",en:"Zhongshan Park Lake Loop"},coordinates:[22.539,113.916],tip:{zh:"📍 绕公园人工湖的环形步道，约 2km。古树成荫，环境幽静。",en:"~2km loop around the lake. Mature trees provide shade throughout."},bestTime:{zh:"6:30 - 8:00",en:"6:30-8 AM"},crowd:"low"},
         {id:803,type:"sports",label:{zh:"中山公园羽毛球场",en:"Zhongshan Badminton Courts"},coordinates:[22.5395,113.9165],tip:{zh:"📍 公园内室外羽毛球场，免费使用，需自备球拍。早晨和傍晚人气高。",en:"📍 Outdoor badminton courts. Free, bring your own equipment."},bestTime:{zh:"7:00 - 9:00 / 17:00 - 19:00",en:"7-9 AM / 5-7 PM"},crowd:"medium"},
-        {id:804,type:"kids",label:{zh:"中山公园儿童乐园",en:"Zhongshan Kids Zone"},coordinates:[22.538,113.915],tip:{zh:"📍 公园南侧小型儿童游乐区，有滑梯、秋千和转盘。",en:"📍 South-side small kids area with slides, swings, and merry-go-round."},bestTime:{zh:"9:00 - 11:00 / 16:00 - 18:00",en:"9-11 AM / 4-6 PM"},crowd:"medium"},
+        {id:804,type:"kids",label:{zh:"中山公园儿童乐园",en:"Zhongshan Kids Zone"},coordinates:[22.538,113.915],tip:{zh:"📍 公园南侧小型儿童游乐区，有滑梯，秋千和转盘。",en:"📍 South-side small kids area with slides, swings, and merry-go-round."},bestTime:{zh:"9:00 - 11:00 / 16:00 - 18:00",en:"9-11 AM / 4-6 PM"},crowd:"medium"},
         {id:805,type:"parking",label:{zh:"中山公园南门停车场",en:"Zhongshan South Parking"},coordinates:[22.538,113.914],tip:{zh:"📍 公园南门外地面停车场。",en:"📍 Surface lot outside south gate."},bestTime:{zh:"全天",en:"All day"},crowd:"low"},
         {id:806,type:"restroom",label:{zh:"公园管理处洗手间",en:"Park Office Restroom"},coordinates:[22.539,113.916],tip:{zh:"📍 公园管理处旁的公共厕所。",en:"📍 Beside park management office."},bestTime:{zh:"全天",en:"All day"},crowd:"low"}
     ]},
@@ -584,7 +866,7 @@ const i18n = {
 };
 
 // ==========================================
-// SVG ICONS — 全部使用 data URI 防止加载延迟
+// SVG ICONS
 // ==========================================
 const ICON_SVGS = {
     sunrise:  `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="3" fill="rgba(255,255,255,0.95)"/><g stroke="rgba(255,255,255,0.85)" stroke-width="1.2" stroke-linecap="round"><line x1="10" y1="1.5" x2="10" y2="3.5"/><line x1="10" y1="16.5" x2="10" y2="18.5"/><line x1="1.5" y1="10" x2="3.5" y2="10"/><line x1="16.5" y1="10" x2="18.5" y2="10"/><line x1="4" y1="4" x2="5.4" y2="5.4"/><line x1="14.6" y1="14.6" x2="16" y2="16"/><line x1="4" y1="16" x2="5.4" y2="14.6"/><line x1="14.6" y1="5.4" x2="16" y2="4"/></g></svg>`,
@@ -602,7 +884,6 @@ const CHEVRON_DOWN = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg
 
 function getIcon(type) { return ICON_SVGS[type] || ICON_SVGS.sunrise; }
 
-// Leaflet DivIcon creator — 确保 SVG 正确注入
 function createMarkerIcon(type, extraClass = '') {
     const iconSvg = getIcon(type);
     const html = `<div class="poi-marker ${extraClass}"><div class="marker-dot ${type}"><div class="pulse-ring"></div><div class="marker-icon">${iconSvg}</div></div></div>`;
@@ -632,12 +913,12 @@ document.addEventListener('DOMContentLoaded', () => {
     loadExplored();
     setLanguage(currentLang);
     renderDirectory();
-    // 延迟注入 brand icon 确保 DOM 已就绪
+    // Brand icon
     requestAnimationFrame(() => {
         const brandContainer = document.getElementById('brand-icon-container');
         if (brandContainer) brandContainer.innerHTML = ICON_SVGS.brand;
     });
-    // 默认打开目录
+    // Default open directory
     toggleDirectory(true);
 });
 
@@ -672,7 +953,6 @@ function initMap() {
     });
 
     amapTiles.on('tileerror', function(e) {
-        console.log('AMap tile error, trying OSM...');
         if (map.hasLayer(amapTiles)) {
             map.removeLayer(amapTiles);
         }
@@ -686,18 +966,15 @@ function initMap() {
 // RENDER POIS ON MAP
 // ==========================================
 function renderPois(poisToShow) {
-    // 先清除旧的 markers
     Object.values(poiMarkers).forEach(m => m.remove());
     poiMarkers = {};
-
     poisToShow.forEach(poi => {
         const isExplored = explored.has(poi.id);
         const isActive = activePoiId === poi.id;
         const extraClass = [isExplored ? 'explored' : '', isActive ? 'active-poi' : ''].filter(Boolean).join(' ');
-
         const icon = createMarkerIcon(poi.type, extraClass);
         const marker = L.marker(poi.coordinates, { icon, zIndexOffset: isExplored ? 0 : 500 }).addTo(map);
-        marker.on('click', () => openPoiDrawer(poi));
+        marker.on('click', () => openPoiSheet(poi));
         poiMarkers[poi.id] = marker;
     });
 }
@@ -722,9 +999,9 @@ function renderParkLabels() {
 }
 
 // ==========================================
-// POI CARD
+// POI BOTTOM SHEET
 // ==========================================
-function openPoiDrawer(poi) {
+function openPoiSheet(poi) {
     const t = i18n[currentLang];
     const park = parks.find(p => p.id === poi.parkId);
     const tip = poi.tip ? poi.tip[currentLang] : '';
@@ -749,51 +1026,55 @@ function openPoiDrawer(poi) {
 
     setActivePoi(poi.id);
 
-    const card = document.getElementById('poi-card');
-    const wrap = document.getElementById('poi-card-wrap');
-    card.innerHTML = `
-        <div class="poi-card-header">
-            <div class="poi-card-icon" style="background:${typeInfo.bg};color:${typeInfo.color};">${getIcon(poi.type)}</div>
-            <div class="poi-card-titles">
-                <div class="poi-card-name">${poi.label[currentLang]}</div>
-                ${park ? `<div class="poi-card-park">
+    const content = document.getElementById('poi-sheet-content');
+    content.innerHTML = `
+        <div class="poi-sheet-header">
+            <div class="poi-sheet-icon" style="background:${typeInfo.bg};color:${typeInfo.color};">${getIcon(poi.type)}</div>
+            <div class="poi-sheet-titles">
+                <div class="poi-sheet-name">${poi.label[currentLang]}</div>
+                ${park ? `<div class="poi-sheet-park">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                    <span class="poi-card-park-name">${park.name[currentLang]}</span>
+                    <span class="poi-sheet-park-name">${park.name[currentLang]}</span>
                 </div>` : ''}
             </div>
-            <button class="poi-card-close" id="poi-card-close-btn" title="关闭">&times;</button>
+            <button class="poi-sheet-close" id="poi-sheet-close-btn">&#x2715;</button>
         </div>
-        <div class="poi-card-body">
-            ${bestTime || poi.crowd ? `<div class="poi-card-meta">
-                ${bestTime ? `<span class="poi-card-badge time"><svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${bestTime}</span>` : ''}
-                ${poi.crowd ? `<span class="poi-card-badge ${poi.crowd}"><span class="dot"></span>${t[poi.crowd]}</span>` : ''}
+        <div class="poi-sheet-body">
+            ${bestTime || poi.crowd ? `<div class="poi-sheet-meta">
+                ${bestTime ? `<span class="poi-sheet-badge time"><svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${bestTime}</span>` : ''}
+                ${poi.crowd ? `<span class="poi-sheet-badge ${poi.crowd}"><span class="dot"></span>${t[poi.crowd]}</span>` : ''}
             </div>` : ''}
-            ${tip ? `<div class="poi-card-tip" style="background:${typeInfo.bg};border-left:3px solid ${typeInfo.color};">
-                <div class="poi-card-tip-icon" style="background:${typeInfo.color};color:white;">
+            ${tip ? `<div class="poi-sheet-tip" style="background:${typeInfo.bg};border-left:4px solid ${typeInfo.color};">
+                <div class="poi-sheet-tip-icon" style="background:${typeInfo.color};color:white;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 </div>
                 <div>${tip}</div>
             </div>` : ''}
-            ${park ? `<div class="poi-card-park-section">
-                <div class="poi-card-park-label">${t.parkInfo}</div>
-                <div class="poi-card-park-desc">${park.description[currentLang]}</div>
-                <div class="poi-card-park-tags">
-                    <span class="poi-card-park-tag">${t.area}: ${park.area[currentLang]}</span>
-                    <span class="poi-card-park-tag">${t.peakHours}: ${park.peakHours[currentLang]}</span>
+            ${park ? `<div class="poi-sheet-park-section">
+                <div class="poi-sheet-park-label">${t.parkInfo}</div>
+                <div class="poi-sheet-park-desc">${park.description[currentLang]}</div>
+                <div class="poi-sheet-park-tags">
+                    <span class="poi-sheet-tag">${t.area}: ${park.area[currentLang]}</span>
+                    <span class="poi-sheet-tag">${t.peakHours}: ${park.peakHours[currentLang]}</span>
                 </div>
             </div>` : ''}
         </div>
     `;
-    document.getElementById('poi-card-close-btn').addEventListener('click', () => {
-        closeDrawer();
-        setActivePoi(null);
-    });
-    wrap.classList.add('visible');
-    map.setView(poi.coordinates, Math.max(map.getZoom(), 15), { animate: true });
+
+    document.getElementById('poi-sheet-close-btn').addEventListener('click', () => closePoiSheet());
+    document.getElementById('poi-sheet-overlay').addEventListener('click', () => closePoiSheet());
+
+    document.getElementById('poi-sheet-overlay').classList.add('active');
+    document.getElementById('poi-sheet').classList.add('open');
+    document.getElementById('poi-sheet-scroll').scrollTop = 0;
+
+    map.flyTo(poi.coordinates, Math.max(map.getZoom(), 15), { duration: 0.8 });
 }
 
-function closeDrawer() {
-    document.getElementById('poi-card-wrap').classList.remove('visible');
+function closePoiSheet() {
+    document.getElementById('poi-sheet-overlay').classList.remove('active');
+    document.getElementById('poi-sheet').classList.remove('open');
+    setActivePoi(null);
 }
 
 // ==========================================
@@ -842,7 +1123,7 @@ function searchPois(query) {
     renderPois(filtered);
     if (filtered.length > 0) {
         const bounds = L.latLngBounds(filtered.map(p => p.coordinates));
-        map.fitBounds(bounds, { padding: [60, 60], maxZoom: 16 });
+        map.fitBounds(bounds, { padding: [80, 80], maxZoom: 16 });
     }
     if (filtered.length === 0) showNoResults();
 }
@@ -909,13 +1190,13 @@ function filterByType(type) {
 
     if (filtered.length > 0) {
         const bounds = L.latLngBounds(filtered.map(p => p.coordinates));
-        map.fitBounds(bounds, { padding: [60, 60], maxZoom: 16 });
+        map.fitBounds(bounds, { padding: [80, 80], maxZoom: 16 });
         if (type !== 'all') {
-            openPoiDrawer(filtered[0]);
+            openPoiSheet(filtered[0]);
         }
     }
     if (type === 'all') {
-        closeDrawer();
+        closePoiSheet();
         setActivePoi(null);
     }
 }
@@ -945,12 +1226,12 @@ function saveExplored() { try { localStorage.setItem('nanshan_explored', JSON.st
 function loadExplored() { try { const saved = localStorage.getItem('nanshan_explored'); if (saved) explored = new Set(JSON.parse(saved)); } catch(e) {} }
 
 // ==========================================
-// PARK DIRECTORY PANEL
+// PARK DIRECTORY BOTTOM SHEET
 // ==========================================
 function renderDirectory(filterText = '') {
     const t = i18n[currentLang];
-    const body = document.getElementById('dir-body');
-    const footer = document.getElementById('dir-footer');
+    const body = document.getElementById('dir-sheet-body');
+    const footer = document.getElementById('dir-sheet-footer');
 
     let filteredParks = parks;
     if (filterText) {
@@ -958,7 +1239,6 @@ function renderDirectory(filterText = '') {
         filteredParks = parks.filter(p => p.name.zh.includes(q) || p.name.en.toLowerCase().includes(q) || p.description.zh.includes(q));
     }
 
-    // 使用 DocumentFragment 减少 reflow
     const fragment = document.createDocumentFragment();
 
     filteredParks.forEach(park => {
@@ -970,7 +1250,6 @@ function renderDirectory(filterText = '') {
         cardDiv.className = 'park-card' + (isExpanded ? ' expanded' : '');
         cardDiv.dataset.parkId = park.id;
 
-        // Header
         const headerDiv = document.createElement('div');
         headerDiv.className = 'park-card-header';
         headerDiv.addEventListener('click', () => toggleParkExpand(park.id));
@@ -996,13 +1275,11 @@ function renderDirectory(filterText = '') {
         headerDiv.appendChild(expandDiv);
         cardDiv.appendChild(headerDiv);
 
-        // Description
         const descDiv = document.createElement('div');
         descDiv.className = 'park-card-desc';
         descDiv.textContent = park.description[currentLang];
         cardDiv.appendChild(descDiv);
 
-        // Tags
         const tagsDiv = document.createElement('div');
         tagsDiv.className = 'park-card-tags';
         poiTypesInPark.forEach(pt => {
@@ -1014,7 +1291,6 @@ function renderDirectory(filterText = '') {
         });
         cardDiv.appendChild(tagsDiv);
 
-        // Child POIs
         const childDiv = document.createElement('div');
         childDiv.className = 'child-pois';
         park.pois.forEach(poi => {
@@ -1028,7 +1304,7 @@ function renderDirectory(filterText = '') {
             iconDiv.className = 'child-poi-icon';
             iconDiv.style.background = typeInfo.color;
             iconDiv.style.color = 'white';
-            iconDiv.innerHTML = getIcon(poi.type); // 直接注入 SVG
+            iconDiv.innerHTML = getIcon(poi.type);
 
             const textDiv = document.createElement('div');
             textDiv.className = 'child-poi-text';
@@ -1053,7 +1329,6 @@ function renderDirectory(filterText = '') {
 
     body.innerHTML = '';
     body.appendChild(fragment);
-
     footer.textContent = t.dirStats.replace('{parks}', parks.length).replace('{pois}', allPois.length);
 }
 
@@ -1073,18 +1348,19 @@ function toggleParkExpand(parkId) {
 function selectChildPoi(poiId) {
     const poi = allPois.find(p => p.id === poiId);
     if (!poi) return;
+    toggleDirectory(false);
     map.flyTo(poi.coordinates, Math.max(map.getZoom(), 16), { duration: 0.8 });
-    openPoiDrawer(poi);
+    setTimeout(() => openPoiSheet(poi), 300);
 }
 
 function getDirSearchValue() { return document.getElementById('dir-search-input')?.value.trim() || ''; }
 
 function toggleDirectory(open) {
     directoryOpen = open;
-    document.getElementById('directory-panel').classList.toggle('open', open);
-    document.getElementById('directory-overlay').classList.toggle('active', open);
+    document.getElementById('dir-sheet').classList.toggle('open', open);
+    document.getElementById('dir-sheet-overlay').classList.toggle('active', open);
+    document.getElementById('dir-fab').classList.toggle('active', open);
     document.getElementById('dir-toggle').classList.toggle('active', open);
-    document.body.classList.toggle('dir-open', open);
     if (open) renderDirectory();
 }
 
@@ -1094,10 +1370,8 @@ function toggleDirectory(open) {
 function bindEvents() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            const card = document.getElementById('poi-card-wrap');
-            if (card.classList.contains('visible')) {
-                closeDrawer();
-                setActivePoi(null);
+            if (document.getElementById('poi-sheet').classList.contains('open')) {
+                closePoiSheet();
             } else if (directoryOpen) {
                 toggleDirectory(false);
             }
@@ -1114,15 +1388,51 @@ function bindEvents() {
         setLanguage(currentLang === 'zh' ? 'en' : 'zh')
     );
 
+    // FAB button (mobile)
+    document.getElementById('dir-fab').addEventListener('click', () => toggleDirectory(!directoryOpen));
+    // Menu button (top bar)
     document.getElementById('dir-toggle').addEventListener('click', () => toggleDirectory(!directoryOpen));
-    document.getElementById('directory-overlay').addEventListener('click', () => toggleDirectory(false));
-    document.getElementById('dir-close').addEventListener('click', () => toggleDirectory(false));
+    // Overlay click
+    document.getElementById('dir-sheet-overlay').addEventListener('click', () => toggleDirectory(false));
+    // Close button
+    document.getElementById('dir-sheet-close').addEventListener('click', () => toggleDirectory(false));
 
     let dirSearchTimeout;
     document.getElementById('dir-search-input').addEventListener('input', (e) => {
         clearTimeout(dirSearchTimeout);
         dirSearchTimeout = setTimeout(() => renderDirectory(e.target.value.trim()), 200);
     });
+
+    // Swipe to close POI sheet
+    let touchStartY = 0;
+    const poiSheet = document.getElementById('poi-sheet');
+    const poiScroll = document.getElementById('poi-sheet-scroll');
+    poiScroll.addEventListener('touchstart', (e) => {
+        if (poiScroll.scrollTop === 0) {
+            touchStartY = e.touches[0].clientY;
+        }
+    }, { passive: true });
+    poiScroll.addEventListener('touchend', (e) => {
+        if (touchStartY > 0 && poiScroll.scrollTop === 0) {
+            const delta = e.changedTouches[0].clientY - touchStartY;
+            if (delta > 60) closePoiSheet();
+        }
+        touchStartY = 0;
+    }, { passive: true });
+
+    // POI sheet handle drag to close
+    let sheetTouchStartY = 0;
+    const poiSheetHandle = document.getElementById('poi-sheet-handle');
+    poiSheetHandle.addEventListener('touchstart', (e) => {
+        sheetTouchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    poiSheetHandle.addEventListener('touchend', (e) => {
+        if (sheetTouchStartY > 0) {
+            const delta = e.changedTouches[0].clientY - sheetTouchStartY;
+            if (delta > 40) closePoiSheet();
+        }
+        sheetTouchStartY = 0;
+    }, { passive: true });
 }
 </script>
 </body>
