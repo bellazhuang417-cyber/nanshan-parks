@@ -715,6 +715,33 @@ function closeRoutine(){
   applyFilters();
 }
 
+// WGS-84 → GCJ-02 (高德/腾讯用的"火星坐标系")。
+// 源数据是 OSM/WGS-84，高德链接需要 GCJ-02，否则在中国大陆会有 100-500m 偏移。
+function wgs84ToGcj02(lat, lng) {
+  // 境外不偏移（粗略判断，南山必然在境内）
+  if (lng < 72.004 || lng > 137.8347 || lat < 0.8293 || lat > 55.8271) return [lat, lng];
+  const a = 6378245.0, ee = 0.00669342162296594323;
+  const transformLat = (x, y) =>
+    -100 + 2*x + 3*y + 0.2*y*y + 0.1*x*y + 0.2*Math.sqrt(Math.abs(x))
+    + (20*Math.sin(6*x*Math.PI) + 20*Math.sin(2*x*Math.PI)) * 2/3
+    + (20*Math.sin(y*Math.PI) + 40*Math.sin(y/3*Math.PI)) * 2/3
+    + (160*Math.sin(y/12*Math.PI) + 320*Math.sin(y*Math.PI/30)) * 2/3;
+  const transformLng = (x, y) =>
+    300 + x + 2*y + 0.1*x*x + 0.1*x*y + 0.1*Math.sqrt(Math.abs(x))
+    + (20*Math.sin(6*x*Math.PI) + 20*Math.sin(2*x*Math.PI)) * 2/3
+    + (20*Math.sin(x*Math.PI) + 40*Math.sin(x/3*Math.PI)) * 2/3
+    + (150*Math.sin(x/12*Math.PI) + 300*Math.sin(x/30*Math.PI)) * 2/3;
+  const dLat0 = transformLat(lng - 105, lat - 35);
+  const dLng0 = transformLng(lng - 105, lat - 35);
+  const radLat = lat / 180 * Math.PI;
+  let magic = Math.sin(radLat);
+  magic = 1 - ee * magic * magic;
+  const sqrtMagic = Math.sqrt(magic);
+  const dLat = (dLat0 * 180) / ((a * (1 - ee)) / (magic * sqrtMagic) * Math.PI);
+  const dLng = (dLng0 * 180) / (a / sqrtMagic * Math.cos(radLat) * Math.PI);
+  return [lat + dLat, lng + dLng];
+}
+
 // Pan map so the target stays visible outside the card (bottom-right) and routine panel (left).
 function panIntoVisible(latLng){
   const size = map.getSize();
@@ -868,7 +895,8 @@ function bindUI() {
   document.getElementById('btnNav').onclick = () => {
     if (!state.activePoi) return;
     const [lat,lng] = state.activePoi.poi.coordinates;
-    window.open(`https://uri.amap.com/marker?position=${lng},${lat}&name=${encodeURIComponent(tr(state.activePoi.poi.label))}`, '_blank');
+    const [glat,glng] = wgs84ToGcj02(lat, lng);
+    window.open(`https://uri.amap.com/marker?position=${glng},${glat}&name=${encodeURIComponent(tr(state.activePoi.poi.label))}&coordinate=gaode`, '_blank');
   };
   // Search
   const input = document.getElementById('searchInput');
