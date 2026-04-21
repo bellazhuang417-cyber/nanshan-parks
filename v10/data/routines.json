@@ -1,0 +1,525 @@
+{
+  "routines": [
+    {
+      "id": "sunrise",
+      "kind": "activity",
+      "name": {
+        "zh": "看日出",
+        "en": "Watch Sunrise"
+      },
+      "icon": "sunrise",
+      "color": "#5B9BD5",
+      "description": {
+        "zh": "南山最佳日出机位合集。按公园分组，包含方位、登山耗时、海拔、季节建议。",
+        "en": "Best sunrise spots in Nanshan, grouped by park."
+      },
+      "entries": [
+        {
+          "park_id": 1,
+          "poi_id": 101,
+          "why": {
+            "zh": "深圳湾最经典日出机位，地铁可达，无登山",
+            "en": "Classic bayside spot, metro accessible, no hiking"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 3,
+          "poi_id": 301,
+          "why": {
+            "zh": "山顶 360° 视野，约 40 分钟登山",
+            "en": "Summit 360° view, ~40 min hike"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 4,
+          "poi_id": 402,
+          "why": {
+            "zh": "半山观景点，约 40 分钟，面向东北",
+            "en": "Mid-mountain, ~40 min, facing NE"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 5,
+          "poi_id": 503,
+          "why": {
+            "zh": "前海天际线日出，平地亲水步道",
+            "en": "Qianhai skyline sunrise, flat promenade"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 2,
+          "poi_id": 201,
+          "why": {
+            "zh": "📍 红树林保护区核心区，从生态展厅旁进入木栈道。日出鸟群最活跃，11月-3月候鸟季可看黑脸琵鹭。需在深圳湾公园公众号预约。",
+            "en": "📍 Core reserve area from Eco Exhibition Hall. Dawn bird activity peak, Nov-Mar migration season."
+          },
+          "featured": true
+        },
+        {
+          "park_id": 7,
+          "poi_id": 701,
+          "why": {
+            "zh": "📍 被茂密荔枝林环绕的开放式健身广场。老南头街坊每天早上聚集在这里打太极、慢跑，夏天有树荫非常舒适。",
+            "en": "📍 Open fitness plaza surrounded by lychee grove. Local Nantou residents' tai chi & jogging spot."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 8,
+          "poi_id": 801,
+          "why": {
+            "zh": "📍 古树参天的广场，晨光穿过树叶打在铜像上很美。适合慢跑热身。",
+            "en": "Ancient tree canopy, morning light through leaves on the statue is beautiful. Good for warm-up jog."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 9,
+          "poi_id": 901,
+          "why": {
+            "zh": "📍 开园时人最少，进入雨林迷宫和热带植物区。蒸汽缭绕、鸟鸣声声，像进入了另一个世界。需购票入内。",
+            "en": "📍 Best at opening — rainforest maze entrance most atmospheric. Ticket required."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 10,
+          "poi_id": 1001,
+          "why": {
+            "zh": "📍 本地钓友的日出据点。月牙形海湾遮挡光线，金光洒在水面的画面很美。适合带鱼竿和咖啡来发呆。",
+            "en": "📍 Local anglers' sunrise spot. Crescent bay creates framed golden light on water."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 12,
+          "poi_id": 1201,
+          "why": {
+            "zh": "📍 从湿地生态展厅旁进入木栈道，穿梭在芦苇和红树林之间。清晨鸟类最活跃。需在「华侨城湿地公园」微信公众号预约入内。",
+            "en": "📍 Wooden boardwalk from Eco Exhibition Hall through reeds & mangroves. WeChat reservation required."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 13,
+          "poi_id": 1303,
+          "why": {
+            "zh": "📍 人才公园的标志性星光跑道，清晨湖面平静倒映前海天际线。跑步体验一流。",
+            "en": "📍 Signature starlight running track. Calm morning lake reflects Qianhai skyline."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 14,
+          "poi_id": 1401,
+          "why": {
+            "zh": "📍 南山最高峰（430米）的「极目阁」观景台。360° 全景，日出云海翻涌非常壮观。登山约 1.5 小时（龙珠大道登山口），途经青云台。",
+            "en": "📍 Nanshan's highest point (430m). 360° views, sea of clouds at sunrise. ~1.5h from Longzhu Ave."
+          },
+          "featured": false
+        }
+      ]
+    },
+    {
+      "id": "sunset",
+      "kind": "activity",
+      "name": {
+        "zh": "看日落",
+        "en": "Watch Sunset"
+      },
+      "icon": "sunset",
+      "color": "#E8943A",
+      "description": {
+        "zh": "南山最佳日落机位合集。含开车可达和需登山两类。",
+        "en": "Best sunset spots in Nanshan, drive-up and hike-up options."
+      },
+      "entries": [
+        {
+          "park_id": 4,
+          "poi_id": 401,
+          "why": {
+            "zh": "蛇口日落天花板，极目阁 360° 无遮挡",
+            "en": "Ultimate Shekou sunset — Jimu Pavilion 360°"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 1,
+          "poi_id": 102,
+          "why": {
+            "zh": "深圳湾运动公园观海长廊，退潮最美",
+            "en": "Sports Park promenade, best at low tide"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 5,
+          "poi_id": 501,
+          "why": {
+            "zh": "前海石广场，日落映深圳湾大桥",
+            "en": "Qianhai Stone Plaza, Bay Bridge silhouette"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 6,
+          "poi_id": 601,
+          "why": {
+            "zh": "演艺公园大草坪，铺野餐垫看日落",
+            "en": "Performance Park lawn, picnic-blanket sunset"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 2,
+          "poi_id": 202,
+          "why": {
+            "zh": "📍 栈道最西端靠近深圳河口。退潮时滩涂露出，弹涂鱼和招潮蟹在夕阳下非常有趣。注意查潮汐表。",
+            "en": "📍 Westernmost end near river mouth. Low tide mudflat wildlife at sunset."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 3,
+          "poi_id": 302,
+          "why": {
+            "zh": "📍 山腰处「齐天亭」，面向前海和蛇口方向。不需登顶就能看到的日落机位，约登山 25 分钟。正对前海湾方向，夏天光晕特别壮观。",
+            "en": "📍 Mid-mountain Qitian Pavilion facing Qianhai & Shekou. ~25min no summit needed."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 11,
+          "poi_id": 1101,
+          "why": {
+            "zh": "📍 明华轮（退役游轮）旁边的海滨栈道。船体剪影配上落日非常出片。看完日落可以直接去海上世界周边餐厅吃饭。",
+            "en": "📍 Promenade beside Minghua (retired cruise ship). Ship silhouette + sunset is photogenic."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 13,
+          "poi_id": 1301,
+          "why": {
+            "zh": "📍 面向前海天际线的湖畔亲水区域。落日映在湖面上，周末有音乐喷泉灯光秀。",
+            "en": "📍 Lakeside platform facing Qianhai skyline. Sunset reflects on water. Weekend fountain shows."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 14,
+          "poi_id": 1402,
+          "why": {
+            "zh": "📍 不需登顶的日落好位置。约 30 分钟到达，面向西南方，适合体能一般的游客。可以看到深圳湾和前海的夜景亮灯过程。",
+            "en": "📍 Great sunset view without summiting. ~30min from trailhead, facing SW."
+          },
+          "featured": false
+        }
+      ]
+    },
+    {
+      "id": "morning_run",
+      "kind": "activity",
+      "name": {
+        "zh": "晨跑线路",
+        "en": "Morning Run"
+      },
+      "icon": "running",
+      "color": "#A78BFA",
+      "description": {
+        "zh": "按公园列出主要跑步路线，附里程、坡度、路面类型。",
+        "en": "Running routes per park — distance, elevation, surface type."
+      },
+      "entries": [
+        {
+          "park_id": 1,
+          "poi_id": 104,
+          "meta": {
+            "distance_km": 3,
+            "elevation_m": 0,
+            "surface": "rubber",
+            "difficulty": "easy"
+          },
+          "why": {
+            "zh": "海边塑胶跑道，平坦海风，最受欢迎",
+            "en": "Rubber track by the sea, flat, most popular"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 2,
+          "poi_id": 203,
+          "meta": {
+            "distance_km": 2,
+            "elevation_m": 0,
+            "surface": "boardwalk",
+            "difficulty": "easy"
+          },
+          "why": {
+            "zh": "红树林木栈道，清晨鸟鸣空气好",
+            "en": "Boardwalk through mangrove, dawn birdsong"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 3,
+          "poi_id": 303,
+          "meta": {
+            "distance_km": 5,
+            "elevation_m": 280,
+            "surface": "stairs",
+            "difficulty": "hard"
+          },
+          "why": {
+            "zh": "主环线 5km 爬升 280m，适合有经验跑者",
+            "en": "5km loop +280m, experienced runners only"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 4,
+          "poi_id": 403,
+          "meta": {
+            "distance_km": 4,
+            "elevation_m": 336,
+            "surface": "trail",
+            "difficulty": "hard"
+          },
+          "why": {
+            "zh": "深圳经典越野跑训练路线",
+            "en": "Classic Shenzhen trail running route"
+          },
+          "featured": true
+        },
+        {
+          "park_id": 5,
+          "poi_id": 504,
+          "why": {
+            "zh": "📍 围绕前海石公园人工湖的环形跑道，约 1.5km。路面平整，夜景灯光一流。",
+            "en": "~1.5km loop around artificial lake. Smooth surface, excellent night lighting."
+          },
+          "featured": true
+        },
+        {
+          "park_id": 7,
+          "poi_id": 703,
+          "why": {
+            "zh": "📍 环绕健身广场的塑胶跑道，约 800m 一圈。树荫覆盖率高，夏天跑步也不晒。",
+            "en": "~800m rubber track around fitness plaza. Heavy tree cover — shaded even in summer."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 8,
+          "poi_id": 802,
+          "why": {
+            "zh": "📍 绕公园人工湖的环形步道，约 2km。古树成荫，环境幽静。",
+            "en": "~2km loop around the lake. Mature trees provide shade throughout."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 10,
+          "poi_id": 1003,
+          "why": {
+            "zh": "📍 沿月牙形海湾的短距离步道，约 800m。安静祥和，适合独自冥想式跑步。",
+            "en": "~800m crescent bay loop. Quiet and meditative running."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 12,
+          "poi_id": 1202,
+          "why": {
+            "zh": "📍 围绕湿地的木栈道环路，约 3km。完全平坦，穿行芦苇荡中，非常宁静治愈。",
+            "en": "~3km boardwalk loop around wetland. Completely flat, through reed beds. Peaceful and healing."
+          },
+          "featured": false
+        },
+        {
+          "park_id": 13,
+          "poi_id": 1304,
+          "why": {
+            "zh": "📍 环湖塑胶跑道，全长 2.5km，是深圳跑友公认的优质跑步路线之一。",
+            "en": "📍 2.5km rubber lake loop — one of Shenzhen's top-rated running routes."
+          },
+          "featured": true
+        },
+        {
+          "park_id": 14,
+          "poi_id": 1403,
+          "why": {
+            "zh": "📍 经典越野跑训练线路，龙珠大道登山口至山顶约 6km，累计爬升 430m。路况原始，需越野跑经验。",
+            "en": "📍 Classic trail run route. Longzhu trailhead to summit ~6km, 430m gain. Primitive terrain needs experience."
+          },
+          "featured": false
+        }
+      ]
+    },
+    {
+      "id": "cycling",
+      "kind": "activity",
+      "name": {
+        "zh": "骑行线路",
+        "en": "Cycling"
+      },
+      "icon": "cycling",
+      "color": "#4ADE80",
+      "description": {
+        "zh": "分两类：公园内短程骑行 + 跨公园长距离绿道。",
+        "en": "Two types: in-park short rides, and long cross-park greenways."
+      },
+      "groups": [
+        {
+          "id": "inpark",
+          "name": {
+            "zh": "公园内骑行",
+            "en": "In-Park Rides"
+          },
+          "description": {
+            "zh": "公园配套骑行设施，适合轻松骑行和带娃",
+            "en": "In-park cycling facilities, casual & family rides"
+          },
+          "entries": [
+            {
+              "park_id": 5,
+              "poi_id": 502,
+              "meta": {
+                "distance_km": 5,
+                "surface": "paved",
+                "difficulty": "easy"
+              },
+              "why": {
+                "zh": "前海湾滨水绿道，崭新路面",
+                "en": "Qianhai Bay waterfront greenway, brand-new"
+              },
+              "featured": true
+            },
+            {
+              "park_id": 6,
+              "poi_id": 602,
+              "meta": {
+                "distance_km": 5,
+                "surface": "paved",
+                "difficulty": "easy"
+              },
+              "why": {
+                "zh": "演艺公园环线，连接前海石",
+                "en": "Performance Park loop, connects to Qianhai Stone"
+              },
+              "featured": true
+            },
+            {
+              "park_id": 1,
+              "poi_id": 103,
+              "why": {
+                "zh": "📍 从红树林海滨生态公园出发沿深圳湾北侧向东到大桥。全长 13km 专用绿道，全程平坦无坡度，适合各类车型。",
+                "en": "📍 From Mangrove Eco Park eastward to Bay Bridge. ~13km dedicated flat greenway."
+              },
+              "featured": true
+            },
+            {
+              "park_id": 7,
+              "poi_id": 702,
+              "why": {
+                "zh": "📍 公园内部的短距离平坦步道，适合带小孩练习骑车和饭后散步。周末人少安静，荔枝林环绕环境清幽。",
+                "en": "📍 Short flat internal path, great for kids learning to ride. Quiet even on weekends."
+              },
+              "featured": false
+            },
+            {
+              "park_id": 10,
+              "poi_id": 1002,
+              "why": {
+                "zh": "📍 连接蛇口片区的短距离亲水步道。路面较窄但风景好，适合休闲骑行和傍晚散步。月牙形海湾景色独特。",
+                "en": "📍 Short waterfront path connecting to Shekou. Narrow but scenic, good for casual rides."
+              },
+              "featured": false
+            },
+            {
+              "park_id": 11,
+              "poi_id": 1102,
+              "why": {
+                "zh": "📍 沿明华轮周边的海滨步道骑行。可以看到明华轮、渔港和远处香港的夜景。傍晚出发，夜骑体验一流。",
+                "en": "📍 Waterside ride around Minghua Ship area. Views of ship, fishing port, and HK at night."
+              },
+              "featured": false
+            },
+            {
+              "park_id": 13,
+              "poi_id": 1302,
+              "why": {
+                "zh": "📍 专业跑道绕湖一圈约 2.5 公里。路面平整，晚上有灯光，夜骑也安全。",
+                "en": "📍 Professional track ~2.5km lake loop. Lit at night, safe evening rides."
+              },
+              "featured": false
+            }
+          ]
+        },
+        {
+          "id": "crosspark",
+          "name": {
+            "zh": "跨公园骑行",
+            "en": "Cross-Park Rides"
+          },
+          "description": {
+            "zh": "南山目前只有深圳湾一条真正意义上的跨公园骑行线路",
+            "en": "Only one real cross-park cycling route exists in Nanshan"
+          },
+          "entries": [
+            {
+              "id": "szb_greenway",
+              "route_name": {
+                "zh": "深圳湾 13km 滨海绿道",
+                "en": "Shenzhen Bay 13km Coastal Greenway"
+              },
+              "meta": {
+                "distance_km": 13,
+                "surface": "paved",
+                "difficulty": "easy"
+              },
+              "parks_covered": [
+                2,
+                1
+              ],
+              "start": {
+                "park_id": 2,
+                "label": {
+                  "zh": "红树林海滨生态公园",
+                  "en": "Mangrove Eco Park"
+                }
+              },
+              "end": {
+                "park_id": 1,
+                "label": {
+                  "zh": "深圳湾大桥",
+                  "en": "Bay Bridge"
+                }
+              },
+              "why": {
+                "zh": "全程专用绿道，平坦无坡度，跨越红树林和深圳湾公园",
+                "en": "Dedicated greenway, flat, crosses Mangrove and Bay Park"
+              },
+              "data_source": "OpenStreetMap cycleway tags + 公开报道",
+              "osm_track": "shenzhenbay + mangrove cycleway features",
+              "featured": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "version": "v10.0",
+    "generated_at": "2026-04-20",
+    "source_notes": [
+      "日出/日落/跑步的 POI tip 文案来自 v9（原始来源：LLM 生成，未经实地核验），POI 坐标为近似值",
+      "骑行轨迹为 OpenStreetMap cycleway/footway tags，数据版本 2026-04-20",
+      "crowd 时段模式为基于文字描述启发式生成，confidence=low，非实时观测"
+    ]
+  }
+}

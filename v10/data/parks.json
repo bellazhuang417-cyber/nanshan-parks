@@ -1,0 +1,2404 @@
+[
+  {
+    "id": 1,
+    "name": {
+      "zh": "深圳湾公园",
+      "en": "Shenzhen Bay Park"
+    },
+    "description": {
+      "zh": "深圳湾沿岸13公里海滨长廊，是深圳最受欢迎的公园之一。",
+      "en": "13km coastal park along Shenzhen Bay, one of Shenzhen's most popular parks."
+    },
+    "area": {
+      "zh": "13公里海岸线",
+      "en": "13km coastline"
+    },
+    "center": [
+      22.509,
+      113.941
+    ],
+    "crowd": "high",
+    "peakHours": {
+      "zh": "周末 8-11点, 16-19点",
+      "en": "Weekends 8-11 AM, 4-7 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "med",
+        "morning": "med",
+        "noon": "med",
+        "afternoon": "med",
+        "evening": "med"
+      },
+      "weekend": {
+        "dawn": "med",
+        "morning": "high",
+        "noon": "med",
+        "afternoon": "high",
+        "evening": "high"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": true,
+      "cycling": true,
+      "running": true,
+      "sports": false,
+      "kids": true,
+      "parking": true,
+      "restroom": false
+    },
+    "osm_park_id": "shenzhenbay",
+    "osm_tier": "tier1",
+    "pois": [
+      {
+        "id": 101,
+        "type": "sunrise",
+        "label": {
+          "zh": "日出剧场",
+          "en": "Sunrise Theater"
+        },
+        "coordinates": [
+          22.5078,
+          113.9398
+        ],
+        "tip": {
+          "zh": "📍 位于深圳湾公园 C2 区（望海路旁），三面环山、面向大海的弧形临海草坪。地铁2号线至湾厦站转公交可达「日出剧场」站，视野开阔无遮挡。冬天云少最出片，夏天建议提前查天气预报。",
+          "en": "📍 Zone C2 of Shenzhen Bay Park (Wanghai Rd). Crescent-shaped seaside lawn surrounded by hills on three sides."
+        },
+        "bestTime": {
+          "zh": "5:30 - 6:00（冬）/ 5:50 - 6:20（夏）",
+          "en": "5:30-6:00 (winter) / 5:50-6:20 (summer)"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 102,
+        "type": "sunset",
+        "label": {
+          "zh": "运动公园观海长廊",
+          "en": "Sports Park Promenade"
+        },
+        "coordinates": [
+          22.5102,
+          113.9435
+        ],
+        "tip": {
+          "zh": "📍 深圳湾公园 C 区运动公园段，面向西南方向的海滨栈道。退潮时滩涂倒映落日，可同时拍到深圳湾大桥和远处香港群山。",
+          "en": "📍 Sports Park section, Zone C, facing SW. Low tide reflections with Bay Bridge + HK hills."
+        },
+        "bestTime": {
+          "zh": "17:30 - 18:30",
+          "en": "5:30 - 6:30 PM"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      },
+      {
+        "id": 103,
+        "type": "cycling",
+        "label": {
+          "zh": "深圳湾滨海骑行道",
+          "en": "Shenzhen Bay Coastal Bike Path"
+        },
+        "coordinates": [
+          22.5115,
+          113.9405
+        ],
+        "tip": {
+          "zh": "📍 从红树林海滨生态公园出发沿深圳湾北侧向东到大桥。全长 13km 专用绿道，全程平坦无坡度，适合各类车型。",
+          "en": "📍 From Mangrove Eco Park eastward to Bay Bridge. ~13km dedicated flat greenway."
+        },
+        "bestTime": {
+          "zh": "7:00 - 9:00 / 16:00 - 18:00",
+          "en": "7-9 AM / 4-6 PM"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      },
+      {
+        "id": 104,
+        "type": "running",
+        "label": {
+          "zh": "深圳湾海滨跑道",
+          "en": "Shenzhen Bay Coastal Run"
+        },
+        "coordinates": [
+          22.5085,
+          113.9415
+        ],
+        "tip": {
+          "zh": "📍 沿海滨栈道的塑胶跑道，从日出剧场到运动公园段约 3km。面朝大海奔跑，空气清新，是深圳跑友最爱的路线之一。",
+          "en": "📍 Rubber track along the seaside promenade. ~3km from Sunrise Theater to Sports Park. Sea breeze all the way."
+        },
+        "bestTime": {
+          "zh": "6:30 - 8:00 / 18:00 - 20:00",
+          "en": "6:30-8 AM / 6-8 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 105,
+        "type": "kids",
+        "label": {
+          "zh": "红树林儿童乐园",
+          "en": "Mangrove Kids' Zone"
+        },
+        "coordinates": [
+          22.517,
+          113.952
+        ],
+        "tip": {
+          "zh": "📍 靠近红树林生态展厅的儿童游乐区域，有沙池、滑梯和攀爬设施。周末人多，建议工作日上午前往。",
+          "en": "📍 Near Eco Exhibition Hall with sandbox, slides, and climbing structures."
+        },
+        "bestTime": {
+          "zh": "9:00 - 11:00（工作日）",
+          "en": "9-11 AM (weekdays)"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      },
+      {
+        "id": 106,
+        "type": "parking",
+        "label": {
+          "zh": "深圳湾公园停车场",
+          "en": "SZ Bay Park Parking"
+        },
+        "coordinates": [
+          22.512,
+          113.944
+        ],
+        "tip": {
+          "zh": "📍 运动公园附近地下停车场，车位较紧张，周末建议早到或使用公共交通。",
+          "en": "📍 Underground parking near Sports Park. Limited spaces on weekends."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": {
+      "zh": "红树林自然保护区",
+      "en": "Mangrove Nature Reserve"
+    },
+    "description": {
+      "zh": "深圳湾河口的保护性滨海湿地，栖息着珍稀红树林和候鸟。",
+      "en": "Protected coastal wetland at the mouth of Shenzhen Bay, home to rare mangroves and migratory birds."
+    },
+    "area": {
+      "zh": "368公顷",
+      "en": "368 hectares"
+    },
+    "center": [
+      22.518,
+      113.954
+    ],
+    "crowd": "medium",
+    "peakHours": {
+      "zh": "周末 9-12点",
+      "en": "Weekends 9 AM - 12 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "weekend": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": true,
+      "cycling": false,
+      "running": true,
+      "sports": false,
+      "kids": false,
+      "parking": false,
+      "restroom": true
+    },
+    "osm_park_id": "mangrove",
+    "osm_tier": "tier1",
+    "pois": [
+      {
+        "id": 201,
+        "type": "sunrise",
+        "label": {
+          "zh": "生态展厅观鸟栈道",
+          "en": "Eco Hall Bird Boardwalk"
+        },
+        "coordinates": [
+          22.5175,
+          113.9532
+        ],
+        "tip": {
+          "zh": "📍 红树林保护区核心区，从生态展厅旁进入木栈道。日出鸟群最活跃，11月-3月候鸟季可看黑脸琵鹭。需在深圳湾公园公众号预约。",
+          "en": "📍 Core reserve area from Eco Exhibition Hall. Dawn bird activity peak, Nov-Mar migration season."
+        },
+        "bestTime": {
+          "zh": "6:00 - 7:30（候鸟季）",
+          "en": "6:00-7:30 AM (migration season)"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 202,
+        "type": "sunset",
+        "label": {
+          "zh": "红树林海滨栈道西端",
+          "en": "West End Mangrove Boardwalk"
+        },
+        "coordinates": [
+          22.519,
+          113.9555
+        ],
+        "tip": {
+          "zh": "📍 栈道最西端靠近深圳河口。退潮时滩涂露出，弹涂鱼和招潮蟹在夕阳下非常有趣。注意查潮汐表。",
+          "en": "📍 Westernmost end near river mouth. Low tide mudflat wildlife at sunset."
+        },
+        "bestTime": {
+          "zh": "17:00 - 18:00（退潮时）",
+          "en": "5:00-6:00 PM (low tide)"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 203,
+        "type": "running",
+        "label": {
+          "zh": "红树林观鸟径",
+          "en": "Mangrove Bird Trail"
+        },
+        "coordinates": [
+          22.5185,
+          113.9545
+        ],
+        "tip": {
+          "zh": "📍 穿越红树林保护区的木栈道步道，全程约 2km 平坦路面。清晨空气最佳，可边跑边观鸟。",
+          "en": "~2km flat boardwalk through mangrove forest. Best air quality at dawn, birdsong along the way."
+        },
+        "bestTime": {
+          "zh": "6:30 - 8:00",
+          "en": "6:30-8 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 204,
+        "type": "restroom",
+        "label": {
+          "zh": "生态展厅洗手间",
+          "en": "Eco Hall Restroom"
+        },
+        "coordinates": [
+          22.5178,
+          113.9538
+        ],
+        "tip": {
+          "zh": "📍 生态展厅一楼洗手间，设施较新。",
+          "en": "📍 First floor of Eco Exhibition Hall."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": {
+      "zh": "南山公园",
+      "en": "Nanshan Park"
+    },
+    "description": {
+      "zh": "南山区主要山地公园，有登山步道、古迹遗址，可俯瞰深圳和香港全景。",
+      "en": "The main mountain park in Nanshan with hiking trails, ancient sites, and panoramic views."
+    },
+    "area": {
+      "zh": "351公顷",
+      "en": "351 hectares"
+    },
+    "center": [
+      22.533,
+      113.917
+    ],
+    "crowd": "medium",
+    "peakHours": {
+      "zh": "周末 6-9点, 16-19点",
+      "en": "Weekends 6-9 AM, 4-7 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "weekend": {
+        "dawn": "med",
+        "morning": "high",
+        "noon": "low",
+        "afternoon": "high",
+        "evening": "high"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": true,
+      "cycling": false,
+      "running": true,
+      "sports": false,
+      "kids": false,
+      "parking": true,
+      "restroom": true
+    },
+    "osm_park_id": "nanshan",
+    "osm_tier": "tier2",
+    "pois": [
+      {
+        "id": 301,
+        "type": "sunrise",
+        "label": {
+          "zh": "南山明灯·山顶观景台",
+          "en": "Nanshan Beacon · Summit"
+        },
+        "coordinates": [
+          22.5335,
+          113.9175
+        ],
+        "tip": {
+          "zh": "📍 公园最高点，标志性建筑「南山明灯」所在。从北山道登山口上山约 40 分钟，可同时看深圳湾大桥、香港群山和福田 CBD 天际线。冬季清晨常有云海。",
+          "en": "📍 Highest point with iconic 'Nanshan Beacon'. ~40min from Beishan Rd. Bay Bridge + HK + Futian views."
+        },
+        "bestTime": {
+          "zh": "6:30 - 7:30（登山后）",
+          "en": "6:30-7:30 AM (after hike)"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 302,
+        "type": "sunset",
+        "label": {
+          "zh": "齐天亭·西部观景台",
+          "en": "Qitian Pavilion · West View"
+        },
+        "coordinates": [
+          22.532,
+          113.915
+        ],
+        "tip": {
+          "zh": "📍 山腰处「齐天亭」，面向前海和蛇口方向。不需登顶就能看到的日落机位，约登山 25 分钟。正对前海湾方向，夏天光晕特别壮观。",
+          "en": "📍 Mid-mountain Qitian Pavilion facing Qianhai & Shekou. ~25min no summit needed."
+        },
+        "bestTime": {
+          "zh": "17:30 - 18:30",
+          "en": "5:30-6:30 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 303,
+        "type": "running",
+        "label": {
+          "zh": "南山环山步道",
+          "en": "Nanshan Loop Trail"
+        },
+        "coordinates": [
+          22.534,
+          113.918
+        ],
+        "tip": {
+          "zh": "📍 南山公园主环线步道，全程约 5km，累计爬升约 280m。山路台阶为主，适合有经验的跑者。清晨人少景美。",
+          "en": "📍 Main loop trail ~5km, 280m elevation gain. Stair-heavy mountain path for experienced runners."
+        },
+        "bestTime": {
+          "zh": "6:00 - 8:00",
+          "en": "6-8 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 304,
+        "type": "parking",
+        "label": {
+          "zh": "北山道入口停车场",
+          "en": "Beishan Rd Entrance Parking"
+        },
+        "coordinates": [
+          22.537,
+          113.92
+        ],
+        "tip": {
+          "zh": "📍 北山道登山口旁露天停车场，免费但车位有限，建议早上 7 点前到达。",
+          "en": "📍 Free open lot near Beishan Rd trailhead. Limited spots, arrive before 7 AM."
+        },
+        "bestTime": {
+          "zh": "全天（免费）",
+          "en": "All day (free)"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 305,
+        "type": "restroom",
+        "label": {
+          "zh": "山顶公厕",
+          "en": "Summit Restroom"
+        },
+        "coordinates": [
+          22.5335,
+          113.9175
+        ],
+        "tip": {
+          "zh": "📍 山顶观景台附近公厕，设施简陋但可用。建议下山前解决。",
+          "en": "📍 Basic facilities near summit viewpoint."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": {
+      "zh": "大南山公园",
+      "en": "Da Nanshan Park"
+    },
+    "description": {
+      "zh": "热门登山目的地，海拔336米，可远眺珠江口日落。",
+      "en": "Popular hiking destination with 336m peak and stunning sunset views over the Pearl River Delta."
+    },
+    "area": {
+      "zh": "海拔336米",
+      "en": "336m peak"
+    },
+    "center": [
+      22.52,
+      113.909
+    ],
+    "crowd": "medium",
+    "peakHours": {
+      "zh": "傍晚 17-20点 看日落",
+      "en": "Evenings 5-8 PM for sunset"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "med",
+        "evening": "high"
+      },
+      "weekend": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "med",
+        "evening": "high"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": true,
+      "cycling": false,
+      "running": true,
+      "sports": false,
+      "kids": false,
+      "parking": true,
+      "restroom": false
+    },
+    "osm_park_id": "da_nanshan",
+    "osm_tier": "tier2",
+    "pois": [
+      {
+        "id": 401,
+        "type": "sunset",
+        "label": {
+          "zh": "山顶·极目阁观日台",
+          "en": "Summit · Jimu Pavilion"
+        },
+        "coordinates": [
+          22.5195,
+          113.9075
+        ],
+        "tip": {
+          "zh": "📍 蛇口看日落的天花板。360° 无遮挡：脚下蛇口片区、赤湾码头、深圳湾，远处香港流浮山和大屿山。从海上世界旁登山口上山约 50 分钟。",
+          "en": "📍 Ultimate Shekou sunset spot. 360° view: Shekou, Chiwan Port, Bay, HK islands. ~50min from Sea World."
+        },
+        "bestTime": {
+          "zh": "17:00 出发 / 18:00 到顶",
+          "en": "Depart 5 PM / Arrive summit 6 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 402,
+        "type": "sunrise",
+        "label": {
+          "zh": "东面山坡观景点",
+          "en": "East Slope Viewpoint"
+        },
+        "coordinates": [
+          22.5205,
+          113.9095
+        ],
+        "tip": {
+          "zh": "📍 面向东北方向的半山观景点。登山约 40 分钟。需带手电筒（山路无路灯），山顶风大请带外套保暖。",
+          "en": "📍 Mid-mountain viewpoint facing NE. ~40min. Bring flashlight — no lights before dawn."
+        },
+        "bestTime": {
+          "zh": "5:30 出发 / 6:00 到顶",
+          "en": "Depart 5:30 AM / Arrive summit 6 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 403,
+        "type": "running",
+        "label": {
+          "zh": "大南山登山步道",
+          "en": "Da Nanshan Climb Trail"
+        },
+        "coordinates": [
+          22.52,
+          113.9085
+        ],
+        "tip": {
+          "zh": "📍 从海上世界登山口到山顶约 4km 登山道，坡度较大。是深圳经典的越野跑训练路线之一。",
+          "en": "~4km climb from Sea World to summit. Steep grade — classic Shenzhen trail run route."
+        },
+        "bestTime": {
+          "zh": "5:30 - 7:00",
+          "en": "5:30-7 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 404,
+        "type": "parking",
+        "label": {
+          "zh": "海上世界停车场",
+          "en": "Sea World Parking"
+        },
+        "coordinates": [
+          22.482,
+          113.916
+        ],
+        "tip": {
+          "zh": "📍 海上世界综合体地下停车场，登山后可在周边用餐。收费停车场。",
+          "en": "📍 Sea World underground parking. Paid. Good dining options after hike."
+        },
+        "bestTime": {
+          "zh": "全天（收费）",
+          "en": "All day (paid)"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": {
+      "zh": "前海石公园",
+      "en": "Qianhai Stone Park"
+    },
+    "description": {
+      "zh": "前海标志性公园，有著名的前海石。开阔海景，现代景观设计。",
+      "en": "Landmark park in Qianhai with the famous Qianhai Stone. Open sea views and modern landscape."
+    },
+    "area": {
+      "zh": "中等",
+      "en": "Medium"
+    },
+    "center": [
+      22.526,
+      113.898
+    ],
+    "crowd": "medium",
+    "peakHours": {
+      "zh": "周末 15-19点",
+      "en": "Weekends 3-7 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "weekend": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "high",
+        "evening": "high"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": true,
+      "cycling": true,
+      "running": true,
+      "sports": false,
+      "kids": false,
+      "parking": true,
+      "restroom": true
+    },
+    "osm_park_id": "qianhai_stone",
+    "osm_tier": "tier1",
+    "pois": [
+      {
+        "id": 501,
+        "type": "sunset",
+        "label": {
+          "zh": "前海石广场",
+          "en": "Qianhai Stone Plaza"
+        },
+        "coordinates": [
+          22.5255,
+          113.8975
+        ],
+        "tip": {
+          "zh": "📍 围绕「前海」石刻巨石的环形广场，面朝深圳湾大桥正西方向。落日余晖中大桥轮廓被金色光晕包裹。",
+          "en": "📍 Circular plaza around engraved 'Qianhai' stone facing Bay Bridge due west."
+        },
+        "bestTime": {
+          "zh": "17:30 - 18:30",
+          "en": "5:30-6:30 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 502,
+        "type": "cycling",
+        "label": {
+          "zh": "前海湾滨水绿道",
+          "en": "Qianhai Bay Waterfront Greenway"
+        },
+        "coordinates": [
+          22.5265,
+          113.899
+        ],
+        "tip": {
+          "zh": "📍 沿前海湾新建的滨水绿道，连接桂湾公园和演艺公园。路面平整宽阔，适合公路车骑行。",
+          "en": "📍 Brand-new waterfront greenway along Qianhai Bay connecting Guiwan & Performance Parks."
+        },
+        "bestTime": {
+          "zh": "17:00 - 19:00",
+          "en": "5-7 PM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 503,
+        "type": "sunrise",
+        "label": {
+          "zh": "前海石海滨步道",
+          "en": "Qianhai Seaside Promenade"
+        },
+        "coordinates": [
+          22.527,
+          113.8965
+        ],
+        "tip": {
+          "zh": "📍 前海石东侧的亲水步道。笔直开阔，适合晨跑散步，可看前海中心区摩天楼群逐渐亮起灯光。",
+          "en": "📍 Seaside promenade east of Qianhai Stone. Watch Qianhai Central District skyscrapers light up."
+        },
+        "bestTime": {
+          "zh": "6:00 - 7:30",
+          "en": "6:00-7:30 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 504,
+        "type": "running",
+        "label": {
+          "zh": "前海石环湖跑道",
+          "en": "Qianhai Lake Loop"
+        },
+        "coordinates": [
+          22.526,
+          113.897
+        ],
+        "tip": {
+          "zh": "📍 围绕前海石公园人工湖的环形跑道，约 1.5km。路面平整，夜景灯光一流。",
+          "en": "~1.5km loop around artificial lake. Smooth surface, excellent night lighting."
+        },
+        "bestTime": {
+          "zh": "6:30 - 8:00 / 19:00 - 21:00",
+          "en": "6:30-8 AM / 7-9 PM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 505,
+        "type": "parking",
+        "label": {
+          "zh": "前海石地下停车场",
+          "en": "Qianhai Stone Parking"
+        },
+        "coordinates": [
+          22.5275,
+          113.896
+        ],
+        "tip": {
+          "zh": "📍 公园地下停车场，收费。周末车位紧张。",
+          "en": "📍 Underground paid parking. Limited on weekends."
+        },
+        "bestTime": {
+          "zh": "全天（收费）",
+          "en": "All day (paid)"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 506,
+        "type": "restroom",
+        "label": {
+          "zh": "前海石公共厕所",
+          "en": "Qianhai Stone Restroom"
+        },
+        "coordinates": [
+          22.526,
+          113.898
+        ],
+        "tip": {
+          "zh": "📍 广场西侧公共卫生间，设施新。",
+          "en": "📍 West side of plaza. Modern facility."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": {
+      "zh": "前海演艺公园",
+      "en": "Qianhai Performance Park"
+    },
+    "description": {
+      "zh": "现代公园，开阔草坪、海景和艺术装置。适合日落野餐和户外活动。",
+      "en": "Modern park with open lawns, sea views, and art installations. Great for sunset picnics."
+    },
+    "area": {
+      "zh": "中等",
+      "en": "Medium"
+    },
+    "center": [
+      22.519,
+      113.893
+    ],
+    "crowd": "medium",
+    "peakHours": {
+      "zh": "周末 15-19点",
+      "en": "Weekends 3-7 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "weekend": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "high",
+        "evening": "high"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": false,
+      "sunset": true,
+      "cycling": true,
+      "running": false,
+      "sports": false,
+      "kids": true,
+      "parking": true,
+      "restroom": false
+    },
+    "osm_park_id": "performance",
+    "osm_tier": "tier2",
+    "pois": [
+      {
+        "id": 601,
+        "type": "sunset",
+        "label": {
+          "zh": "演艺草坪·野餐区",
+          "en": "Performance Lawn · Picnic Area"
+        },
+        "coordinates": [
+          22.5185,
+          113.8925
+        ],
+        "tip": {
+          "zh": "📍 公园中央的超大弧形草坪，面朝正西方向，铺野餐垫看日落的绝佳位置。周末常有人搭帐篷放风筝。建议下午 4 点到达占位。",
+          "en": "📍 Large curved central lawn facing west — perfect picnic blanket sunset spot. Arrive ~4PM."
+        },
+        "bestTime": {
+          "zh": "16:30 - 18:30",
+          "en": "4:30-6:30 PM"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      },
+      {
+        "id": 602,
+        "type": "cycling",
+        "label": {
+          "zh": "前海湾环线骑行道",
+          "en": "Qianhai Bay Loop Path"
+        },
+        "coordinates": [
+          22.5195,
+          113.8935
+        ],
+        "tip": {
+          "zh": "📍 连接演艺公园和前海石公园的滨水骑行路段。沿港湾曲线延伸，玻璃幕墙建筑群+平静海面，全程约 5km。",
+          "en": "📍 Waterfront cycling link between Performance Park & Qianhai Stone. ~5km harbor curve."
+        },
+        "bestTime": {
+          "zh": "16:00 - 18:00",
+          "en": "4-6 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 603,
+        "type": "kids",
+        "label": {
+          "zh": "演艺公园儿童乐园",
+          "en": "Performance Park Kids Zone"
+        },
+        "coordinates": [
+          22.518,
+          113.893
+        ],
+        "tip": {
+          "zh": "📍 草坪北侧的小型儿童游乐区，有秋千、跷跷板和沙坑。周末家庭聚集地。",
+          "en": "📍 Small kids zone north of the lawn with swings, seesaw, and sandbox."
+        },
+        "bestTime": {
+          "zh": "16:00 - 18:00",
+          "en": "4-6 PM"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      },
+      {
+        "id": 604,
+        "type": "parking",
+        "label": {
+          "zh": "演艺公园地面停车场",
+          "en": "Performance Park Parking"
+        },
+        "coordinates": [
+          22.519,
+          113.892
+        ],
+        "tip": {
+          "zh": "📍 公园东侧地面停车场，收费。",
+          "en": "📍 East side surface parking. Paid."
+        },
+        "bestTime": {
+          "zh": "全天（收费）",
+          "en": "All day (paid)"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": {
+      "zh": "荔香公园",
+      "en": "Lixiang Park"
+    },
+    "description": {
+      "zh": "南头片区社区公园，以荔枝林闻名，氛围宁静。适合晨练和家庭散步。",
+      "en": "Neighborhood park in Nantou area known for lychee trees and peaceful atmosphere."
+    },
+    "area": {
+      "zh": "小型",
+      "en": "Small"
+    },
+    "center": [
+      22.535,
+      113.924
+    ],
+    "crowd": "low",
+    "peakHours": {
+      "zh": "早上 6-9点",
+      "en": "Mornings 6-9 AM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "med",
+        "morning": "high",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "weekend": {
+        "dawn": "med",
+        "morning": "high",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": false,
+      "cycling": true,
+      "running": true,
+      "sports": true,
+      "kids": true,
+      "parking": true,
+      "restroom": true
+    },
+    "osm_park_id": "lixiang",
+    "osm_tier": "tier3",
+    "pois": [
+      {
+        "id": 701,
+        "type": "sunrise",
+        "label": {
+          "zh": "荔枝林健身广场",
+          "en": "Lychee Grove Fitness Plaza"
+        },
+        "coordinates": [
+          22.5355,
+          113.9245
+        ],
+        "tip": {
+          "zh": "📍 被茂密荔枝林环绕的开放式健身广场。老南头街坊每天早上聚集在这里打太极、慢跑，夏天有树荫非常舒适。",
+          "en": "📍 Open fitness plaza surrounded by lychee grove. Local Nantou residents' tai chi & jogging spot."
+        },
+        "bestTime": {
+          "zh": "6:00 - 8:00",
+          "en": "6:00-8:00 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 702,
+        "type": "cycling",
+        "label": {
+          "zh": "环园健身步道",
+          "en": "Park Loop Walking Path"
+        },
+        "coordinates": [
+          22.5345,
+          113.9235
+        ],
+        "tip": {
+          "zh": "📍 公园内部的短距离平坦步道，适合带小孩练习骑车和饭后散步。周末人少安静，荔枝林环绕环境清幽。",
+          "en": "📍 Short flat internal path, great for kids learning to ride. Quiet even on weekends."
+        },
+        "bestTime": {
+          "zh": "7:00 - 9:00",
+          "en": "7-9 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 703,
+        "type": "running",
+        "label": {
+          "zh": "荔香公园慢跑道",
+          "en": "Lixiang Park Jogging Track"
+        },
+        "coordinates": [
+          22.535,
+          113.924
+        ],
+        "tip": {
+          "zh": "📍 环绕健身广场的塑胶跑道，约 800m 一圈。树荫覆盖率高，夏天跑步也不晒。",
+          "en": "~800m rubber track around fitness plaza. Heavy tree cover — shaded even in summer."
+        },
+        "bestTime": {
+          "zh": "6:30 - 8:00",
+          "en": "6:30-8 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 704,
+        "type": "sports",
+        "label": {
+          "zh": "荔香公园篮球场",
+          "en": "Lixiang Park Basketball Court"
+        },
+        "coordinates": [
+          22.534,
+          113.923
+        ],
+        "tip": {
+          "zh": "📍 公园东北角的室外篮球场，免费开放。早晚时段常有人打球，光线一般。",
+          "en": "📍 Outdoor basketball court at northeast corner. Free. Popular morning/evening slots."
+        },
+        "bestTime": {
+          "zh": "7:00 - 9:00 / 17:30 - 19:30",
+          "en": "7-9 AM / 5:30-7:30 PM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 705,
+        "type": "kids",
+        "label": {
+          "zh": "荔香儿童游乐场",
+          "en": "Lixiang Kids Playground"
+        },
+        "coordinates": [
+          22.5355,
+          113.924
+        ],
+        "tip": {
+          "zh": "📍 健身广场旁边的小型儿童游乐设施，适合学龄前儿童。",
+          "en": "📍 Small playground beside fitness plaza. For preschool-aged children."
+        },
+        "bestTime": {
+          "zh": "8:00 - 11:00",
+          "en": "8-11 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 706,
+        "type": "parking",
+        "label": {
+          "zh": "荔香公园路边停车",
+          "en": "Lixiang Street Parking"
+        },
+        "coordinates": [
+          22.536,
+          113.925
+        ],
+        "tip": {
+          "zh": "📍 公园外围道路路边停车位，免费但数量很少。",
+          "en": "📍 Street parking around park perimeter. Free but very limited."
+        },
+        "bestTime": {
+          "zh": "白天",
+          "en": "Daytime"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 707,
+        "type": "restroom",
+        "label": {
+          "zh": "公园东门洗手间",
+          "en": "Park East Gate Restroom"
+        },
+        "coordinates": [
+          22.536,
+          113.925
+        ],
+        "tip": {
+          "zh": "📍 公园东门附近的公共厕所。",
+          "en": "📍 Near east gate entrance."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": {
+      "zh": "中山公园",
+      "en": "Zhongshan Park"
+    },
+    "description": {
+      "zh": "以孙中山命名的历史公园，有孙中山铜像和花园。南山最老的公园。",
+      "en": "Historic park named after Sun Yat-sen. The oldest park in Nanshan with mature trees."
+    },
+    "area": {
+      "zh": "49公顷",
+      "en": "49 hectares"
+    },
+    "center": [
+      22.539,
+      113.916
+    ],
+    "crowd": "medium",
+    "peakHours": {
+      "zh": "早上 7-10点, 傍晚",
+      "en": "Mornings 7-10 AM, Evenings"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "med",
+        "morning": "high",
+        "noon": "low",
+        "afternoon": "high",
+        "evening": "high"
+      },
+      "weekend": {
+        "dawn": "med",
+        "morning": "high",
+        "noon": "low",
+        "afternoon": "high",
+        "evening": "high"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": false,
+      "cycling": false,
+      "running": true,
+      "sports": true,
+      "kids": true,
+      "parking": true,
+      "restroom": true
+    },
+    "osm_park_id": "zhongshan",
+    "osm_tier": "tier3",
+    "pois": [
+      {
+        "id": 801,
+        "type": "sunrise",
+        "label": {
+          "zh": "孙中山铜像广场",
+          "en": "Sun Yat-sen Statue Plaza"
+        },
+        "coordinates": [
+          22.5385,
+          113.9155
+        ],
+        "tip": {
+          "zh": "📍 古树参天的广场，晨光穿过树叶打在铜像上很美。适合慢跑热身。",
+          "en": "Ancient tree canopy, morning light through leaves on the statue is beautiful. Good for warm-up jog."
+        },
+        "bestTime": {
+          "zh": "6:30 - 8:00",
+          "en": "6:30-8:00 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 802,
+        "type": "running",
+        "label": {
+          "zh": "中山公园环湖步道",
+          "en": "Zhongshan Park Lake Loop"
+        },
+        "coordinates": [
+          22.539,
+          113.916
+        ],
+        "tip": {
+          "zh": "📍 绕公园人工湖的环形步道，约 2km。古树成荫，环境幽静。",
+          "en": "~2km loop around the lake. Mature trees provide shade throughout."
+        },
+        "bestTime": {
+          "zh": "6:30 - 8:00",
+          "en": "6:30-8 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 803,
+        "type": "sports",
+        "label": {
+          "zh": "中山公园羽毛球场",
+          "en": "Zhongshan Badminton Courts"
+        },
+        "coordinates": [
+          22.5395,
+          113.9165
+        ],
+        "tip": {
+          "zh": "📍 公园内室外羽毛球场，免费使用，需自备球拍。早晨和傍晚人气高。",
+          "en": "📍 Outdoor badminton courts. Free, bring your own equipment."
+        },
+        "bestTime": {
+          "zh": "7:00 - 9:00 / 17:00 - 19:00",
+          "en": "7-9 AM / 5-7 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 804,
+        "type": "kids",
+        "label": {
+          "zh": "中山公园儿童乐园",
+          "en": "Zhongshan Kids Zone"
+        },
+        "coordinates": [
+          22.538,
+          113.915
+        ],
+        "tip": {
+          "zh": "📍 公园南侧小型儿童游乐区，有滑梯、秋千和转盘。",
+          "en": "📍 South-side small kids area with slides, swings, and merry-go-round."
+        },
+        "bestTime": {
+          "zh": "9:00 - 11:00 / 16:00 - 18:00",
+          "en": "9-11 AM / 4-6 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 805,
+        "type": "parking",
+        "label": {
+          "zh": "中山公园南门停车场",
+          "en": "Zhongshan South Parking"
+        },
+        "coordinates": [
+          22.538,
+          113.914
+        ],
+        "tip": {
+          "zh": "📍 公园南门外地面停车场。",
+          "en": "📍 Surface lot outside south gate."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 806,
+        "type": "restroom",
+        "label": {
+          "zh": "公园管理处洗手间",
+          "en": "Park Office Restroom"
+        },
+        "coordinates": [
+          22.539,
+          113.916
+        ],
+        "tip": {
+          "zh": "📍 公园管理处旁的公共厕所。",
+          "en": "📍 Beside park management office."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": {
+      "zh": "青青世界",
+      "en": "Qingqing World"
+    },
+    "description": {
+      "zh": "生态旅游主题公园，有植物园、瀑布、蝴蝶馆和教育展览。",
+      "en": "Eco-tourism theme park with botanical gardens, waterfalls, and butterfly house."
+    },
+    "area": {
+      "zh": "20公顷",
+      "en": "20 hectares"
+    },
+    "center": [
+      22.537,
+      113.908
+    ],
+    "crowd": "low",
+    "peakHours": {
+      "zh": "周末 10-16点",
+      "en": "Weekends 10 AM - 4 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "weekend": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": false,
+      "cycling": false,
+      "running": false,
+      "sports": false,
+      "kids": true,
+      "parking": true,
+      "restroom": true
+    },
+    "osm_park_id": null,
+    "osm_tier": null,
+    "pois": [
+      {
+        "id": 901,
+        "type": "sunrise",
+        "label": {
+          "zh": "热带雨林景区入口",
+          "en": "Tropical Rainforest Entrance"
+        },
+        "coordinates": [
+          22.5365,
+          113.9075
+        ],
+        "tip": {
+          "zh": "📍 开园时人最少，进入雨林迷宫和热带植物区。蒸汽缭绕、鸟鸣声声，像进入了另一个世界。需购票入内。",
+          "en": "📍 Best at opening — rainforest maze entrance most atmospheric. Ticket required."
+        },
+        "bestTime": {
+          "zh": "9:00 - 10:00（刚开园）",
+          "en": "9-10 AM (just opened)"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 902,
+        "type": "kids",
+        "label": {
+          "zh": "蝴蝶生态园",
+          "en": "Butterfly Garden"
+        },
+        "coordinates": [
+          22.537,
+          113.9085
+        ],
+        "tip": {
+          "zh": "📍 园内热门亲子项目，可以近距离观察各种蝴蝶。孩子们的最爱。包含在门票内。",
+          "en": "📍 Popular family attraction — observe butterflies up close. Included with ticket."
+        },
+        "bestTime": {
+          "zh": "10:00 - 15:00",
+          "en": "10 AM - 3 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 903,
+        "type": "parking",
+        "label": {
+          "zh": "青青世界停车场",
+          "en": "Qingqing World Parking"
+        },
+        "coordinates": [
+          22.5375,
+          113.907
+        ],
+        "tip": {
+          "zh": "📍 景区门口停车场，收费。容量充足。",
+          "en": "📍 Entrance parking lot. Paid. Adequate capacity."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 904,
+        "type": "restroom",
+        "label": {
+          "zh": "游客中心洗手间",
+          "en": "Visitor Center Restroom"
+        },
+        "coordinates": [
+          22.537,
+          113.908
+        ],
+        "tip": {
+          "zh": "📍 游客服务中心内的公共卫生间，设施完善。",
+          "en": "📍 Inside visitor service center. Well-equipped."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": {
+      "zh": "月亮湾公园",
+      "en": "Moon Bay Park"
+    },
+    "description": {
+      "zh": "月牙形海湾公园，适合晨练和钓鱼。社区氛围宁静。",
+      "en": "Crescent-shaped bay park, popular for morning exercises and fishing."
+    },
+    "area": {
+      "zh": "小型",
+      "en": "Small"
+    },
+    "center": [
+      22.493,
+      113.886
+    ],
+    "crowd": "low",
+    "peakHours": {
+      "zh": "早上 6-9点",
+      "en": "Mornings 6-9 AM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "med",
+        "morning": "high",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "weekend": {
+        "dawn": "med",
+        "morning": "high",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": false,
+      "cycling": true,
+      "running": true,
+      "sports": false,
+      "kids": false,
+      "parking": true,
+      "restroom": false
+    },
+    "osm_park_id": null,
+    "osm_tier": null,
+    "pois": [
+      {
+        "id": 1001,
+        "type": "sunrise",
+        "label": {
+          "zh": "月亮湾钓场",
+          "en": "Moon Bay Fishing Spot"
+        },
+        "coordinates": [
+          22.4925,
+          113.8855
+        ],
+        "tip": {
+          "zh": "📍 本地钓友的日出据点。月牙形海湾遮挡光线，金光洒在水面的画面很美。适合带鱼竿和咖啡来发呆。",
+          "en": "📍 Local anglers' sunrise spot. Crescent bay creates framed golden light on water."
+        },
+        "bestTime": {
+          "zh": "5:50 - 6:30",
+          "en": "5:50-6:30 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1002,
+        "type": "cycling",
+        "label": {
+          "zh": "月亮湾海滨步道",
+          "en": "Moon Bay Promenade"
+        },
+        "coordinates": [
+          22.4935,
+          113.887
+        ],
+        "tip": {
+          "zh": "📍 连接蛇口片区的短距离亲水步道。路面较窄但风景好，适合休闲骑行和傍晚散步。月牙形海湾景色独特。",
+          "en": "📍 Short waterfront path connecting to Shekou. Narrow but scenic, good for casual rides."
+        },
+        "bestTime": {
+          "zh": "7:00 - 8:30",
+          "en": "7-8:30 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1003,
+        "type": "running",
+        "label": {
+          "zh": "月亮湾环湾小径",
+          "en": "Moon Bay Loop Path"
+        },
+        "coordinates": [
+          22.493,
+          113.8865
+        ],
+        "tip": {
+          "zh": "📍 沿月牙形海湾的短距离步道，约 800m。安静祥和，适合独自冥想式跑步。",
+          "en": "~800m crescent bay loop. Quiet and meditative running."
+        },
+        "bestTime": {
+          "zh": "6:30 - 8:00",
+          "en": "6:30-8 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1004,
+        "type": "parking",
+        "label": {
+          "zh": "月亮湾路侧停车",
+          "en": "Moon Bay Roadside Parking"
+        },
+        "coordinates": [
+          22.493,
+          113.888
+        ],
+        "tip": {
+          "zh": "📍 公园外围道路免费路边停车位。",
+          "en": "📍 Free street parking along road outside park."
+        },
+        "bestTime": {
+          "zh": "白天",
+          "en": "Daytime"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": {
+      "zh": "蛇口海上世界",
+      "en": "Shekou Sea World"
+    },
+    "description": {
+      "zh": "以明华轮为中心的海滨文化综合体，有公园、博物馆、国际美食。",
+      "en": "Waterfront cultural complex centered around the Minghua cruise ship."
+    },
+    "area": {
+      "zh": "综合区域",
+      "en": "Mixed use area"
+    },
+    "center": [
+      22.482,
+      113.916
+    ],
+    "crowd": "high",
+    "peakHours": {
+      "zh": "晚上 18-22点",
+      "en": "Evenings 6-10 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "med",
+        "morning": "med",
+        "noon": "med",
+        "afternoon": "med",
+        "evening": "high"
+      },
+      "weekend": {
+        "dawn": "med",
+        "morning": "med",
+        "noon": "med",
+        "afternoon": "med",
+        "evening": "high"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": false,
+      "sunset": true,
+      "cycling": true,
+      "running": false,
+      "sports": false,
+      "kids": true,
+      "parking": true,
+      "restroom": true
+    },
+    "osm_park_id": null,
+    "osm_tier": null,
+    "pois": [
+      {
+        "id": 1101,
+        "type": "sunset",
+        "label": {
+          "zh": "明华轮海滨长廊",
+          "en": "Minghua Ship Promenade"
+        },
+        "coordinates": [
+          22.4815,
+          113.9155
+        ],
+        "tip": {
+          "zh": "📍 明华轮（退役游轮）旁边的海滨栈道。船体剪影配上落日非常出片。看完日落可以直接去海上世界周边餐厅吃饭。",
+          "en": "📍 Promenade beside Minghua (retired cruise ship). Ship silhouette + sunset is photogenic."
+        },
+        "bestTime": {
+          "zh": "17:30 - 18:30",
+          "en": "5:30-6:30 PM"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1102,
+        "type": "cycling",
+        "label": {
+          "zh": "海上世界滨海步道",
+          "en": "Sea World Waterfront Path"
+        },
+        "coordinates": [
+          22.4825,
+          113.9175
+        ],
+        "tip": {
+          "zh": "📍 沿明华轮周边的海滨步道骑行。可以看到明华轮、渔港和远处香港的夜景。傍晚出发，夜骑体验一流。",
+          "en": "📍 Waterside ride around Minghua Ship area. Views of ship, fishing port, and HK at night."
+        },
+        "bestTime": {
+          "zh": "17:00 - 19:30",
+          "en": "5-7:30 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1103,
+        "type": "kids",
+        "label": {
+          "zh": "海上世界儿童乐园",
+          "en": "Sea World Kids Land"
+        },
+        "coordinates": [
+          22.483,
+          113.916
+        ],
+        "tip": {
+          "zh": "📍 明华轮南侧的开放式儿童娱乐区，有小型的旋转木马和游乐设施。周末热闹非凡。",
+          "en": "📍 South of Minghua — open kids zone with carousel and rides. Very lively on weekends."
+        },
+        "bestTime": {
+          "zh": "16:00 - 20:00",
+          "en": "4-8 PM"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1104,
+        "type": "parking",
+        "label": {
+          "zh": "海上世界地下车库",
+          "en": "Sea World Underground Parking"
+        },
+        "coordinates": [
+          22.482,
+          113.916
+        ],
+        "tip": {
+          "zh": "📍海上世界综合体大型地下停车场，收费但车位充裕。",
+          "en": "📍 Large underground parking garage. Paid but ample spaces."
+        },
+        "bestTime": {
+          "zh": "全天（收费）",
+          "en": "All day (paid)"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1105,
+        "type": "restroom",
+        "label": {
+          "zh": "明华轮码头洗手间",
+          "en": "Minghua Pier Restroom"
+        },
+        "coordinates": [
+          22.4815,
+          113.9155
+        ],
+        "tip": {
+          "zh": "📍 明华轮码头附近公共卫生间。",
+          "en": "📍 Near Minghua pier."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": {
+      "zh": "华侨城湿地公园",
+      "en": "OCT Wetland Park"
+    },
+    "description": {
+      "zh": "城市保护湿地，有栈道、丰富鸟类和环保教育。需要预约入内。",
+      "en": "Protected urban wetland with boardwalks, rich birdlife. Reservation required."
+    },
+    "area": {
+      "zh": "68.5公顷",
+      "en": "68.5 hectares"
+    },
+    "center": [
+      22.541,
+      113.982
+    ],
+    "crowd": "low",
+    "peakHours": {
+      "zh": "周末 9-12点",
+      "en": "Weekends 9 AM - 12 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "weekend": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": false,
+      "cycling": false,
+      "running": true,
+      "sports": false,
+      "kids": false,
+      "parking": true,
+      "restroom": true
+    },
+    "osm_park_id": null,
+    "osm_tier": null,
+    "pois": [
+      {
+        "id": 1201,
+        "type": "sunrise",
+        "label": {
+          "zh": "湿地生态展厅栈道",
+          "en": "Wetland Eco Exhibition Boardwalk"
+        },
+        "coordinates": [
+          22.5405,
+          113.9815
+        ],
+        "tip": {
+          "zh": "📍 从湿地生态展厅旁进入木栈道，穿梭在芦苇和红树林之间。清晨鸟类最活跃。需在「华侨城湿地公园」微信公众号预约入内。",
+          "en": "📍 Wooden boardwalk from Eco Exhibition Hall through reeds & mangroves. WeChat reservation required."
+        },
+        "bestTime": {
+          "zh": "7:00 - 9:00（需预约）",
+          "en": "7-9 AM (reservation needed)"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1202,
+        "type": "running",
+        "label": {
+          "zh": "湿地公园环湖栈道",
+          "en": "Wetland Park Lake Boardwalk"
+        },
+        "coordinates": [
+          22.541,
+          113.982
+        ],
+        "tip": {
+          "zh": "📍 围绕湿地的木栈道环路，约 3km。完全平坦，穿行芦苇荡中，非常宁静治愈。",
+          "en": "~3km boardwalk loop around wetland. Completely flat, through reed beds. Peaceful and healing."
+        },
+        "bestTime": {
+          "zh": "7:00 - 9:00",
+          "en": "7-9 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1203,
+        "type": "parking",
+        "label": {
+          "zh": "OCT创意园停车场",
+          "en": "OCT Creative Park Parking"
+        },
+        "coordinates": [
+          22.542,
+          113.98
+        ],
+        "tip": {
+          "zh": "📍 湿地公园不设专用停车场，最近的停车场在华侨城创意园内。步行约 8 分钟到达。",
+          "en": "📍 No dedicated parking. Nearest is OCT Creative Park, ~8 min walk."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1204,
+        "type": "restroom",
+        "label": {
+          "zh": "生态展厅洗手间",
+          "en": "Eco Hall Restroom"
+        },
+        "coordinates": [
+          22.5405,
+          113.9815
+        ],
+        "tip": {
+          "zh": "📍 湿地生态展厅内的卫生间。",
+          "en": "📍 Inside Eco Exhibition Hall."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": {
+      "zh": "人才公园",
+      "en": "Talent Park"
+    },
+    "description": {
+      "zh": "以深圳人才为主题的现代湖滨公园，大草坪、音乐喷泉、跑道。",
+      "en": "Modern lakeside park celebrating Shenzhen's talent. Open lawns and music fountain."
+    },
+    "area": {
+      "zh": "大型",
+      "en": "Large"
+    },
+    "center": [
+      22.525,
+      113.938
+    ],
+    "crowd": "medium",
+    "peakHours": {
+      "zh": "晚上 18-21点",
+      "en": "Evenings 6-9 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "high"
+      },
+      "weekend": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "high"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": true,
+      "cycling": true,
+      "running": true,
+      "sports": false,
+      "kids": true,
+      "parking": true,
+      "restroom": true
+    },
+    "osm_park_id": null,
+    "osm_tier": null,
+    "pois": [
+      {
+        "id": 1301,
+        "type": "sunset",
+        "label": {
+          "zh": "湖畔亲水平台",
+          "en": "Lakeside Platform"
+        },
+        "coordinates": [
+          22.5245,
+          113.9375
+        ],
+        "tip": {
+          "zh": "📍 面向前海天际线的湖畔亲水区域。落日映在湖面上，周末有音乐喷泉灯光秀。",
+          "en": "📍 Lakeside platform facing Qianhai skyline. Sunset reflects on water. Weekend fountain shows."
+        },
+        "bestTime": {
+          "zh": "17:30 - 18:30",
+          "en": "5:30-6:30 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1302,
+        "type": "cycling",
+        "label": {
+          "zh": "环湖跑道",
+          "en": "Lake Loop Track"
+        },
+        "coordinates": [
+          22.5255,
+          113.9395
+        ],
+        "tip": {
+          "zh": "📍 专业跑道绕湖一圈约 2.5 公里。路面平整，晚上有灯光，夜骑也安全。",
+          "en": "📍 Professional track ~2.5km lake loop. Lit at night, safe evening rides."
+        },
+        "bestTime": {
+          "zh": "17:00 - 20:00",
+          "en": "5-8 PM"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1303,
+        "type": "sunrise",
+        "label": {
+          "zh": "人才公园星光跑道",
+          "en": "Talent Park Starlight Run"
+        },
+        "coordinates": [
+          22.526,
+          113.9365
+        ],
+        "tip": {
+          "zh": "📍 人才公园的标志性星光跑道，清晨湖面平静倒映前海天际线。跑步体验一流。",
+          "en": "📍 Signature starlight running track. Calm morning lake reflects Qianhai skyline."
+        },
+        "bestTime": {
+          "zh": "6:00 - 7:30",
+          "en": "6:00-7:30 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1304,
+        "type": "running",
+        "label": {
+          "zh": "人才公园专业跑道",
+          "en": "Talent Pro Running Track"
+        },
+        "coordinates": [
+          22.5255,
+          113.9385
+        ],
+        "tip": {
+          "zh": "📍 环湖塑胶跑道，全长 2.5km，是深圳跑友公认的优质跑步路线之一。",
+          "en": "📍 2.5km rubber lake loop — one of Shenzhen's top-rated running routes."
+        },
+        "bestTime": {
+          "zh": "6:00 - 8:00 / 19:00 - 21:00",
+          "en": "6-8 AM / 7-9 PM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1305,
+        "type": "kids",
+        "label": {
+          "zh": "人才公园草坪区",
+          "en": "Talent Park Lawn Area"
+        },
+        "coordinates": [
+          22.524,
+          113.938
+        ],
+        "tip": {
+          "zh": "📍 湖畔大片开阔草坪，适合放风筝、踢球和野餐。周末家庭聚集地。",
+          "en": "📍 Expansive lakeside lawn — kite flying, soccer, picnics. Family favorite on weekends."
+        },
+        "bestTime": {
+          "zh": "15:00 - 18:00",
+          "en": "3-6 PM"
+        },
+        "crowd": "high",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1306,
+        "type": "parking",
+        "label": {
+          "zh": "人才公园地下停车场",
+          "en": "Talent Park Parking"
+        },
+        "coordinates": [
+          22.527,
+          113.94
+        ],
+        "tip": {
+          "zh": "📍 公园北门地下停车场，收费。周末紧张。",
+          "en": "📍 North gate underground parking. Paid, tight on weekends."
+        },
+        "bestTime": {
+          "zh": "全天（收费）",
+          "en": "All day (paid)"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1307,
+        "type": "restroom",
+        "label": {
+          "zh": "公园服务站洗手间",
+          "en": "Service Station Restroom"
+        },
+        "coordinates": [
+          22.525,
+          113.938
+        ],
+        "tip": {
+          "zh": "📍 公园内服务站配套卫生间。",
+          "en": "📍 At park service station."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "medium",
+        "data_status": "unverified"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": {
+      "zh": "塘朗山郊野公园",
+      "en": "Tanglang Mountain Park"
+    },
+    "description": {
+      "zh": "南山最高峰（430米）的山野公园。原始登山步道穿越亚热带森林。",
+      "en": "Nanshan's highest peak (430m). Pristine hiking through subtropical forest."
+    },
+    "area": {
+      "zh": "海拔430米",
+      "en": "430m peak"
+    },
+    "center": [
+      22.574,
+      113.943
+    ],
+    "crowd": "low",
+    "peakHours": {
+      "zh": "周末 7-12点",
+      "en": "Weekends 7 AM - 12 PM"
+    },
+    "crowdPattern": {
+      "weekday": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "weekend": {
+        "dawn": "low",
+        "morning": "low",
+        "noon": "low",
+        "afternoon": "low",
+        "evening": "low"
+      },
+      "source": {
+        "zh": "基于公园描述整理，非实时观测",
+        "en": "Derived from park description, not live data"
+      },
+      "verified_at": "2026-04-20",
+      "confidence": "low"
+    },
+    "facilities": {
+      "sunrise": true,
+      "sunset": true,
+      "cycling": false,
+      "running": true,
+      "sports": false,
+      "kids": false,
+      "parking": true,
+      "restroom": true
+    },
+    "osm_park_id": null,
+    "osm_tier": null,
+    "pois": [
+      {
+        "id": 1401,
+        "type": "sunrise",
+        "label": {
+          "zh": "塘朗顶·极目阁",
+          "en": "Tanglang Peak · Jimu Pavilion"
+        },
+        "coordinates": [
+          22.576,
+          113.9435
+        ],
+        "tip": {
+          "zh": "📍 南山最高峰（430米）的「极目阁」观景台。360° 全景，日出云海翻涌非常壮观。登山约 1.5 小时（龙珠大道登山口），途经青云台。",
+          "en": "📍 Nanshan's highest point (430m). 360° views, sea of clouds at sunrise. ~1.5h from Longzhu Ave."
+        },
+        "bestTime": {
+          "zh": "5:00 出发 / 6:30 到顶",
+          "en": "Depart 5 AM / Arrive summit 6:30 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1402,
+        "type": "sunset",
+        "label": {
+          "zh": "塘朗半山观景台",
+          "en": "Tanglang Mid-Mountain View"
+        },
+        "coordinates": [
+          22.573,
+          113.942
+        ],
+        "tip": {
+          "zh": "📍 不需登顶的日落好位置。约 30 分钟到达，面向西南方，适合体能一般的游客。可以看到深圳湾和前海的夜景亮灯过程。",
+          "en": "📍 Great sunset view without summiting. ~30min from trailhead, facing SW."
+        },
+        "bestTime": {
+          "zh": "17:00 - 18:00",
+          "en": "5-6 PM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1403,
+        "type": "running",
+        "label": {
+          "zh": "塘朗山登山步道",
+          "en": "Tanglang Mountain Trail Run"
+        },
+        "coordinates": [
+          22.5745,
+          113.943
+        ],
+        "tip": {
+          "zh": "📍 经典越野跑训练线路，龙珠大道登山口至山顶约 6km，累计爬升 430m。路况原始，需越野跑经验。",
+          "en": "📍 Classic trail run route. Longzhu trailhead to summit ~6km, 430m gain. Primitive terrain needs experience."
+        },
+        "bestTime": {
+          "zh": "5:00 - 7:00",
+          "en": "5-7 AM"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1404,
+        "type": "parking",
+        "label": {
+          "zh": "龙珠大道登山口停车",
+          "en": "Longzhu Trailhead Parking"
+        },
+        "coordinates": [
+          22.568,
+          113.945
+        ],
+        "tip": {
+          "zh": "📍 龙珠大道登山口旁免费路边停车区。空间有限，建议早到。",
+          "en": "📍 Free roadside parking near Longzhu trailhead. Limited, arrive early."
+        },
+        "bestTime": {
+          "zh": "全天（免费）",
+          "en": "All day (free)"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      },
+      {
+        "id": 1405,
+        "type": "restroom",
+        "label": {
+          "zh": "半山驿站洗手间",
+          "en": "Mid-Mountain Station Restroom"
+        },
+        "coordinates": [
+          22.573,
+          113.942
+        ],
+        "tip": {
+          "zh": "📍 半山观景台附近的简易洗手间。",
+          "en": "📍 Basic restroom near mid-mountain viewpoint."
+        },
+        "bestTime": {
+          "zh": "全天",
+          "en": "All day"
+        },
+        "crowd": "low",
+        "data_status": "unverified"
+      }
+    ]
+  }
+]

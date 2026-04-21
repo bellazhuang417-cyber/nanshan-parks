@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>探索南山 v10 | Explore Nanshan</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --parchment:#f5f4ed; --ivory:#faf9f5; --warm-sand:#e8e6dc;
+  --near-black:#141413; --charcoal:#4d4c48; --olive:#5e5d59;
+  --stone:#87867f; --silver:#b0aea5; --border:#e8e6dc; --border-soft:#f0eee6;
+  --ring:#d1cfc5; --terracotta:#c96442; --coral:#d97757;
+
+  --sunrise:#5B9BD5; --sunset:#E8943A; --cycling:#4ADE80; --running:#A78BFA;
+  --sports:#F472B6; --kids:#FACC15; --parking:#94A3B8; --restroom:#67E8F9;
+
+  --r-xs:8px; --r-sm:12px; --r-md:16px; --r-lg:20px;
+  --shadow-soft:0 2px 16px rgba(0,0,0,.06);
+  --shadow-card:0 4px 24px rgba(0,0,0,.05);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+html,body{height:100%;height:100dvh;overflow:hidden;background:var(--parchment);
+  color:var(--near-black);
+  font-family:-apple-system,'SF Pro Text','PingFang SC','Noto Sans SC',sans-serif;
+  -webkit-font-smoothing:antialiased;overscroll-behavior:none}
+i{display:inline-flex;align-items:center;justify-content:center}
+i > svg{width:100%;height:100%;display:block}
+
+#map{position:absolute;inset:0;z-index:0}
+.leaflet-control-zoom{border:none!important;box-shadow:var(--shadow-soft)!important;
+  border-radius:var(--r-sm)!important;overflow:hidden}
+.leaflet-control-zoom a{width:36px!important;height:36px!important;line-height:36px!important;
+  font-size:16px!important;color:var(--charcoal)!important;background:var(--ivory)!important;
+  border:none!important}
+.leaflet-control-zoom a:hover{background:var(--warm-sand)!important}
+.leaflet-control-attribution{font-size:10px!important;background:rgba(245,244,237,.75)!important;
+  backdrop-filter:blur(4px);color:var(--stone)!important;padding:3px 8px!important;
+  border-radius:5px 0 0 0!important}
+
+/* ── Top bar ───────────────────── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;
+  gap:10px;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));
+  background:var(--ivory);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.brand i{width:22px;height:22px;color:var(--terracotta)}
+.brand-text{font-size:16px;font-weight:600;color:var(--near-black);letter-spacing:-.2px}
+.search-box{flex:1;max-width:240px;position:relative;display:flex;align-items:center}
+.search-box i{position:absolute;left:10px;width:16px;height:16px;color:var(--stone);
+  pointer-events:none}
+.search-box input{width:100%;padding:8px 12px 8px 32px;border:1px solid var(--border);
+  border-radius:var(--r-md);background:var(--warm-sand);font-size:13px;
+  color:var(--near-black);outline:none;transition:all .2s}
+.search-box input:focus{border-color:var(--terracotta);background:var(--ivory);
+  box-shadow:0 0 0 3px rgba(201,100,66,.12)}
+.lang-btn{padding:5px 12px;border:1px solid var(--border);border-radius:var(--r-sm);
+  background:transparent;font-size:12px;font-weight:500;color:var(--olive);
+  cursor:pointer;transition:all .15s}
+.lang-btn:hover{background:var(--warm-sand);color:var(--near-black)}
+
+/* ── Routine tabs ──────────────── */
+.routines-bar{position:fixed;top:56px;left:14px;z-index:900;display:flex;gap:4px;
+  padding:4px;background:var(--ivory);border:1px solid var(--border);
+  border-radius:var(--r-lg);max-width:calc(100vw - 28px);overflow-x:auto;
+  scrollbar-width:none;box-shadow:var(--shadow-soft)}
+.routines-bar::-webkit-scrollbar{display:none}
+.r-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:none;
+  border-radius:16px;background:transparent;font-size:13px;font-weight:500;
+  color:var(--olive);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.r-chip:hover{background:var(--warm-sand);color:var(--near-black)}
+.r-chip.active{background:var(--near-black);color:var(--ivory)}
+.r-chip i{width:15px;height:15px;flex-shrink:0}
+.r-chip.active i{color:var(--ivory)}
+
+/* ── Layer toggles (facility) ─── */
+.layer-panel{position:fixed;top:56px;right:14px;z-index:900;display:flex;flex-direction:column;
+  gap:4px;padding:8px;background:var(--ivory);border:1px solid var(--border);
+  border-radius:var(--r-md);box-shadow:var(--shadow-soft);min-width:140px}
+.layer-title{font-size:10px;font-weight:600;color:var(--stone);
+  text-transform:uppercase;letter-spacing:.5px;padding:2px 4px 4px}
+.layer-toggle{display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;
+  border-radius:var(--r-xs);background:transparent;font-size:12px;color:var(--charcoal);
+  cursor:pointer;transition:all .15s;width:100%;text-align:left}
+.layer-toggle:hover{background:var(--warm-sand)}
+.layer-toggle.on{background:var(--warm-sand);color:var(--near-black);font-weight:500}
+.layer-toggle i{width:14px;height:14px;color:var(--olive)}
+.layer-toggle.on i{color:var(--terracotta)}
+.layer-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-left:auto}
+
+/* ── Routine panel (slide from left) ─ */
+.overlay{position:fixed;inset:0;z-index:1800;background:rgba(20,20,19,.06);
+  opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.active{opacity:1;pointer-events:auto}
+.routine-panel{position:fixed;top:0;left:0;bottom:0;z-index:1900;width:360px;
+  max-width:88vw;background:var(--ivory);border-right:1px solid var(--border);
+  box-shadow:4px 0 40px rgba(0,0,0,.08);transform:translateX(-100%);opacity:0;
+  transition:transform .4s var(--ease),opacity .3s;display:flex;flex-direction:column}
+.routine-panel.open{transform:translateX(0);opacity:1}
+.rp-header{display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px 14px;border-bottom:1px solid var(--border)}
+.rp-title{font-size:16px;font-weight:600;color:var(--near-black);
+  display:flex;align-items:center;gap:8px}
+.rp-title i{width:18px;height:18px;color:var(--terracotta)}
+.rp-close{width:30px;height:30px;border-radius:50%;border:none;background:var(--warm-sand);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--olive);
+  transition:background .15s}
+.rp-close:hover{background:var(--border)}
+.rp-close i{width:15px;height:15px}
+.rp-desc{padding:10px 18px 4px;font-size:12px;color:var(--stone);line-height:1.5}
+.rp-body{flex:1;overflow-y:auto;padding:8px 12px 16px;-webkit-overflow-scrolling:touch}
+.rp-body::-webkit-scrollbar{width:3px}
+.rp-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.rp-group-title{font-size:11px;font-weight:600;color:var(--stone);
+  text-transform:uppercase;letter-spacing:.5px;padding:10px 6px 6px}
+.rp-item{display:flex;flex-direction:column;gap:4px;padding:12px 14px;margin-bottom:6px;
+  border:1px solid var(--border-soft);border-radius:var(--r-sm);background:#fff;
+  cursor:pointer;transition:all .2s}
+.rp-item:hover{border-color:var(--ring);box-shadow:var(--shadow-soft)}
+.rp-item-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.rp-item-park{font-size:11px;font-weight:500;color:var(--stone)}
+.rp-item-name{font-size:14px;font-weight:600;color:var(--near-black)}
+.rp-item-why{font-size:12px;color:var(--charcoal);line-height:1.5;margin-top:4px}
+.rp-item-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.rp-item-meta span{font-size:11px;color:var(--olive);background:var(--warm-sand);
+  padding:2px 8px;border-radius:10px}
+.rp-item.featured{border-color:var(--ring)}
+.feat-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;
+  color:var(--terracotta);background:rgba(201,100,66,.1);padding:2px 7px;border-radius:10px;
+  margin-right:6px;vertical-align:middle;letter-spacing:.3px}
+.feat-badge i{width:10px;height:10px}
+.cross-badge{display:inline-flex;align-items:center;font-size:10px;font-weight:600;
+  color:#059669;background:rgba(74,222,128,.14);padding:2px 7px;border-radius:10px;
+  margin-right:6px;vertical-align:middle;letter-spacing:.3px}
+
+/* ── POI markers ──────────────── */
+.poi-marker{width:30px;height:30px;cursor:pointer;transition:transform .2s var(--ease);
+  display:flex;align-items:center;justify-content:center;pointer-events:auto}
+.poi-marker:hover{transform:scale(1.15);z-index:1000!important}
+.marker-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12),0 0 0 2px #fff}
+.marker-dot i,.marker-dot svg{width:14px;height:14px;color:#fff;stroke-width:2.5}
+.marker-dot.sunrise{background:var(--sunrise)}
+.marker-dot.sunset{background:var(--sunset)}
+.marker-dot.cycling{background:var(--cycling)}
+.marker-dot.running{background:var(--running)}
+.marker-dot.sports{background:var(--sports)}
+.marker-dot.kids{background:var(--kids)}
+.marker-dot.parking{background:var(--parking)}
+.marker-dot.restroom{background:var(--restroom)}
+.poi-marker.dim .marker-dot{opacity:.22}
+.poi-marker.active .marker-dot{box-shadow:0 0 0 3px var(--near-black),0 4px 16px rgba(0,0,0,.2)}
+
+.park-label{background:none;border:none;box-shadow:none;
+  font-family:inherit;font-size:11px;font-weight:500;color:var(--near-black);
+  text-shadow:0 0 8px rgba(245,244,237,1),0 0 16px rgba(245,244,237,.7);
+  white-space:nowrap;padding:1px 5px;letter-spacing:.3px}
+
+/* ── POI card (bottom) ───────── */
+.card{position:fixed;bottom:24px;right:24px;z-index:2000;width:360px;
+  max-width:calc(100vw - 48px);background:var(--ivory);
+  border:1px solid var(--border);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-card);opacity:0;transform:translateY(12px);
+  pointer-events:none;transition:all .3s var(--ease)}
+.card.show{opacity:1;transform:translateY(0);pointer-events:auto}
+body.routine-open .card{right:calc(360px + 24px)}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;
+  gap:10px;padding:14px 16px 8px}
+.card-type{display:inline-flex;align-items:center;gap:4px;font-size:10px;
+  font-weight:600;color:var(--stone);text-transform:uppercase;letter-spacing:.5px;
+  padding:3px 8px;border-radius:10px;background:var(--warm-sand);align-self:flex-start}
+.card-type i{width:11px;height:11px}
+.card-close{width:26px;height:26px;border-radius:50%;border:none;
+  background:var(--warm-sand);cursor:pointer;color:var(--olive);
+  display:flex;align-items:center;justify-content:center;transition:background .15s}
+.card-close:hover{background:var(--border)}
+.card-close i{width:13px;height:13px}
+.card-title{padding:0 16px 4px;font-size:17px;font-weight:600;
+  color:var(--near-black);line-height:1.3}
+.card-park{padding:0 16px;font-size:12px;color:var(--stone)}
+.card-tip{padding:10px 16px 8px;font-size:13px;color:var(--charcoal);line-height:1.55}
+.card-meta{display:flex;gap:8px;flex-wrap:wrap;padding:4px 16px 10px}
+.card-meta span{font-size:11px;color:var(--olive);background:var(--warm-sand);
+  padding:3px 10px;border-radius:10px;display:inline-flex;align-items:center;gap:4px}
+.card-meta i{width:11px;height:11px}
+
+/* crowd heatmap */
+.crowd-section{padding:8px 16px 12px;border-top:1px dashed var(--border)}
+.crowd-title{display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;font-weight:600;color:var(--olive);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.crowd-title .crowd-source{font-weight:400;font-size:10px;color:var(--stone);
+  text-transform:none;letter-spacing:0}
+.crowd-tabs{display:flex;gap:4px;margin-bottom:6px}
+.crowd-tab{flex:1;padding:3px 8px;font-size:11px;border:1px solid var(--border);
+  background:transparent;color:var(--olive);border-radius:var(--r-xs);cursor:pointer}
+.crowd-tab.active{background:var(--near-black);color:var(--ivory);border-color:var(--near-black)}
+.crowd-row{display:flex;gap:2px;margin-top:4px}
+.crowd-cell{flex:1;height:16px;border-radius:3px;background:var(--warm-sand);
+  position:relative;font-size:9px;color:var(--stone);display:flex;align-items:center;
+  justify-content:center}
+.crowd-cell.low{background:#E8F5E9;color:#4CAF50}
+.crowd-cell.med{background:#FFF3E0;color:#FB8C00}
+.crowd-cell.high{background:#FFEBEE;color:#E53935}
+.crowd-cell.now{outline:2px solid var(--near-black);outline-offset:-1px}
+.crowd-labels{display:flex;gap:2px;margin-top:3px}
+.crowd-labels span{flex:1;font-size:9px;text-align:center;color:var(--silver)}
+
+/* footer actions */
+.card-actions{display:flex;gap:8px;padding:10px 16px 14px;border-top:1px solid var(--border)}
+.card-btn{flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:var(--r-xs);
+  background:#fff;font-size:12px;color:var(--olive);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+.card-btn:hover{background:var(--warm-sand);color:var(--near-black)}
+.card-btn i{width:13px;height:13px}
+.card-btn.stale-marked{background:#FEF3C7;color:#92400E;border-color:#FCD34D}
+
+.data-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;
+  color:var(--stone);padding:2px 6px;background:var(--border-soft);
+  border-radius:8px;margin-left:6px}
+.data-badge i{width:10px;height:10px}
+
+/* Layer FAB (mobile) */
+.layer-fab{display:none;position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));
+  right:12px;z-index:901;width:48px;height:48px;border-radius:50%;border:1px solid var(--border);
+  background:var(--ivory);box-shadow:var(--shadow-soft);cursor:pointer;
+  align-items:center;justify-content:center;color:var(--charcoal)}
+.layer-fab i{width:22px;height:22px}
+.layer-fab.on{background:var(--near-black);color:var(--ivory);border-color:var(--near-black)}
+
+/* Bottom-sheet drag handle */
+.sheet-handle{display:none;width:36px;height:4px;border-radius:2px;
+  background:var(--border);margin:8px auto 0}
+
+/* ── mobile (≤640px) ────────────── */
+@media (max-width:640px){
+  .topbar{gap:6px;padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top))}
+  .brand-text{display:none}
+  .search-box{max-width:none}
+  .routines-bar{top:calc(52px + env(safe-area-inset-top));left:8px;right:8px;max-width:none;
+    padding:5px;gap:6px}
+  .r-chip{padding:9px 14px;min-height:36px}
+  .layer-fab{display:flex}
+  body.routine-open .layer-fab,
+  body.card-open .layer-fab{display:none}
+  .layer-panel{top:auto;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));
+    min-width:180px;display:none}
+  .layer-panel.open{display:flex;flex-direction:column}
+
+  /* Routine list → bottom sheet */
+  .routine-panel{top:auto;right:0;left:0;bottom:0;width:auto;max-width:none;
+    height:75vh;height:75dvh;border-right:none;border-top:1px solid var(--border);
+    border-radius:18px 18px 0 0;
+    transform:translateY(100%);box-shadow:0 -4px 40px rgba(0,0,0,.12);
+    padding-bottom:env(safe-area-inset-bottom)}
+  .routine-panel.open{transform:translateY(0)}
+  .routine-panel .sheet-handle{display:block}
+  .rp-header{padding:8px 18px 10px}
+
+  /* POI card → bottom sheet */
+  .card{top:auto;right:0;left:0;bottom:0;width:auto;max-width:none;
+    border-radius:18px 18px 0 0;border-bottom:none;
+    transform:translateY(100%);opacity:1;
+    max-height:70vh;max-height:70dvh;overflow-y:auto;
+    padding-bottom:env(safe-area-inset-bottom);-webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain}
+  .card.show{transform:translateY(0)}
+  .card .sheet-handle{display:block}
+  body.routine-open .card{right:0}
+  .card-actions{position:sticky;bottom:0;background:var(--ivory)}
+  .card-btn{min-height:44px}
+
+  /* Marker tap target */
+  .poi-marker{width:36px;height:36px}
+  .marker-dot{width:34px;height:34px}
+  .marker-dot i,.marker-dot svg{width:16px;height:16px}
+}
+
+.lang-en .zh{display:none}
+:not(.lang-en) .en{display:none}
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="topbar">
+  <div class="brand">
+    <i data-icon="map-pin"></i>
+    <span class="brand-text">
+      <span class="zh">探索南山</span>
+      <span class="en">Explore Nanshan</span>
+    </span>
+  </div>
+  <div class="search-box">
+    <i data-icon="search"></i>
+    <input id="searchInput" placeholder="搜索公园或地点" />
+  </div>
+  <button class="lang-btn" id="langBtn">EN</button>
+</div>
+
+<div class="routines-bar" id="routinesBar"></div>
+
+<button class="layer-fab" id="layerFab" aria-label="设施图层"><i data-icon="layers"></i></button>
+
+<div class="layer-panel" id="layerPanel">
+  <div class="layer-title"><span class="zh">设施图层</span><span class="en">Facilities</span></div>
+  <button class="layer-toggle" data-layer="parking">
+    <i data-icon="parking-square"></i>
+    <span class="zh">停车场</span><span class="en">Parking</span>
+    <span class="layer-dot" style="background:var(--parking)"></span>
+  </button>
+  <button class="layer-toggle" data-layer="restroom">
+    <i data-icon="bath"></i>
+    <span class="zh">洗手间</span><span class="en">Restroom</span>
+    <span class="layer-dot" style="background:var(--restroom)"></span>
+  </button>
+  <div class="layer-title" style="margin-top:6px"><span class="zh">轨迹</span><span class="en">Tracks</span></div>
+  <button class="layer-toggle on" data-layer="tracks">
+    <i data-icon="route"></i>
+    <span class="zh">步道/骑行道</span><span class="en">Paths</span>
+    <span class="layer-dot" style="background:var(--cycling)"></span>
+  </button>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="routine-panel" id="routinePanel">
+  <div class="sheet-handle"></div>
+  <div class="rp-header">
+    <div class="rp-title" id="rpTitle"><i data-icon="sun"></i><span>Routine</span></div>
+    <button class="rp-close" id="rpClose"><i data-icon="x"></i></button>
+  </div>
+  <div class="rp-desc" id="rpDesc"></div>
+  <div class="rp-body" id="rpBody"></div>
+</div>
+
+<div class="card" id="poiCard">
+  <div class="sheet-handle"></div>
+  <div class="card-head">
+    <span class="card-type" id="cardType"></span>
+    <button class="card-close" id="cardClose"><i data-icon="x"></i></button>
+  </div>
+  <div class="card-title" id="cardTitle"></div>
+  <div class="card-park" id="cardPark"></div>
+  <div class="card-tip" id="cardTip"></div>
+  <div class="card-meta" id="cardMeta"></div>
+  <div class="crowd-section">
+    <div class="crowd-title">
+      <span><span class="zh">人流预估</span><span class="en">Crowd Pattern</span></span>
+      <span class="crowd-source" id="crowdSource"></span>
+    </div>
+    <div class="crowd-tabs">
+      <button class="crowd-tab active" data-daytype="weekday"><span class="zh">工作日</span><span class="en">Weekday</span></button>
+      <button class="crowd-tab" data-daytype="weekend"><span class="zh">周末</span><span class="en">Weekend</span></button>
+    </div>
+    <div class="crowd-row" id="crowdRow"></div>
+    <div class="crowd-labels">
+      <span>5-8</span><span>8-11</span><span>11-14</span><span>14-17</span><span>17-20</span>
+    </div>
+  </div>
+  <div class="card-actions">
+    <button class="card-btn" id="btnStale">
+      <i data-icon="flag"></i>
+      <span class="zh">信息过时</span><span class="en">Mark outdated</span>
+    </button>
+    <button class="card-btn" id="btnNav">
+      <i data-icon="navigation"></i>
+      <span class="zh">导航</span><span class="en">Navigate</span>
+    </button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  const box = document.createElement('div');
+  box.style.cssText = 'position:fixed;top:10px;left:10px;right:10px;z-index:99999;background:#FFEBEE;border:2px solid #E53935;color:#B71C1C;padding:16px;font:12px/1.5 monospace;border-radius:8px;white-space:pre-wrap;max-height:60vh;overflow:auto';
+  box.textContent = '❌ JS ERROR: ' + msg + '\n@ ' + src + ':' + line + ':' + col + (err && err.stack ? '\n' + err.stack : '');
+  document.body.appendChild(box);
+  return false;
+};
+window.addEventListener('unhandledrejection', e => {
+  const box = document.createElement('div');
+  box.style.cssText = 'position:fixed;top:10px;left:10px;right:10px;z-index:99999;background:#FFEBEE;border:2px solid #E53935;color:#B71C1C;padding:16px;font:12px/1.5 monospace;border-radius:8px;white-space:pre-wrap';
+  box.textContent = '❌ Promise error: ' + (e.reason && e.reason.stack ? e.reason.stack : e.reason);
+  document.body.appendChild(box);
+});
+// ============ Icons (inlined Lucide SVGs, ISC license) ============
+const ICONS = {
+  'map-pin':      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>',
+  'search':       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+  'x':            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+  'sunrise':      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>',
+  'sunset':       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 6-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>',
+  'bike':         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>',
+  'footprints':   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/></svg>',
+  'volleyball':   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M11.1 2.05a10 10 0 0 1 8.83 8.75"/><path d="M22 12c0-4-3-8-8-9"/><path d="M12 22a10 10 0 0 1-8-3.76"/></svg>',
+  'baby':         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/></svg>',
+  'parking-square':'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg>',
+  'bath':         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4 8 6"/><path d="M17 19v2"/><path d="M2 12h20"/><path d="M7 19v2"/><path d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg>',
+  'route':        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>',
+  'clock':        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  'users':        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  'flag':         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>',
+  'navigation':   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>',
+  'alert-triangle':'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+  'sparkles':     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>',
+  'layers':       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83Z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>',
+};
+function renderIcons(root){
+  const scope = root || document;
+  scope.querySelectorAll('i[data-icon]').forEach(el => {
+    const name = el.getAttribute('data-icon');
+    const svg = ICONS[name] || ICONS['map-pin'];
+    el.innerHTML = svg;
+  });
+}
+
+// ============ i18n ============
+const T = {
+  sunrise: {zh:"看日出", en:"Sunrise"},
+  sunset:  {zh:"看日落", en:"Sunset"},
+  cycling: {zh:"骑行", en:"Cycling"},
+  running: {zh:"跑步", en:"Running"},
+  morning_run:{zh:"晨跑", en:"Morning run"},
+  sports:  {zh:"球类", en:"Sports"},
+  kids:    {zh:"亲子", en:"Kids"},
+  parking: {zh:"停车", en:"Parking"},
+  restroom:{zh:"洗手间", en:"Restroom"},
+};
+const LEVELS = {low:{zh:'闲',en:'Low'},med:{zh:'中',en:'Med'},high:{zh:'挤',en:'High'}};
+
+let lang = 'zh';
+function tr(obj){ if (!obj) return ''; return (typeof obj === 'string') ? obj : (obj[lang] || obj.zh || obj.en || ''); }
+
+// ============ State ============
+let state = {
+  parks: [],
+  routines: [],
+  tracks: null,
+  activeRoutineId: null,
+  activeLayers: new Set(['tracks']),
+  activePoi: null,
+  crowdDayType: 'weekday',
+  staleMarked: new Set(JSON.parse(localStorage.getItem('stale') || '[]')),
+};
+
+// ============ Map ============
+const map = L.map('map', { zoomControl:true, attributionControl:true })
+  .setView([22.52, 113.93], 13);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution:'© OpenStreetMap · © CARTO',
+  maxZoom:19
+}).addTo(map);
+
+let poiMarkers = {};          // id -> {marker, poi, park}
+let parkLabels = [];
+let trackLayer = L.layerGroup().addTo(map);
+
+// ============ Data load ============
+async function loadData() {
+  const [parks, routines, tracks] = await Promise.all([
+    fetch('data/parks.json').then(r=>r.json()),
+    fetch('data/routines.json').then(r=>r.json()),
+    fetch('data/tracks.geojson').then(r=>r.json())
+  ]);
+  state.parks = parks;
+  state.routines = routines.routines;
+  state.tracks = tracks;
+  renderParkLabels();
+  renderTracks();
+  renderPOIMarkers();
+  renderRoutineBar();
+  bindUI();
+  renderIcons();
+}
+
+function renderParkLabels() {
+  state.parks.forEach(p => {
+    const label = L.marker(p.center, {
+      icon: L.divIcon({
+        className: 'park-label',
+        html: `<span class="zh">${p.name.zh}</span><span class="en">${p.name.en}</span>`,
+        iconSize:[80,16], iconAnchor:[40,-14]
+      }),
+      interactive:false
+    }).addTo(map);
+    parkLabels.push(label);
+  });
+}
+
+function renderTracks() {
+  trackLayer.clearLayers();
+  if (!state.activeLayers.has('tracks')) return;
+  const features = state.tracks.features;
+
+  features.forEach(f => {
+    const kind = f.properties.kind;
+    if (kind === 'park_boundary') {
+      L.geoJSON(f, {
+        style: { color: '#87867f', weight:1, dashArray:'4,4', fillOpacity:0.04, fillColor:'#87867f' }
+      }).addTo(trackLayer);
+    } else if (kind === 'cycleway') {
+      L.geoJSON(f, {
+        style: { color: 'var(--cycling)'.replace('var(--cycling)','#4ADE80'), weight:3, opacity:0.75 }
+      }).addTo(trackLayer);
+    } else if (kind === 'footway') {
+      L.geoJSON(f, {
+        style: { color: '#A78BFA', weight:1.5, opacity:0.45, dashArray:'2,3' }
+      }).addTo(trackLayer);
+    }
+  });
+}
+
+function renderPOIMarkers() {
+  Object.values(poiMarkers).forEach(m => map.removeLayer(m.marker));
+  poiMarkers = {};
+  state.parks.forEach(park => {
+    park.pois.forEach(poi => {
+      const icon = iconFor(poi.type);
+      const marker = L.marker(poi.coordinates, {
+        icon: L.divIcon({
+          className:'poi-marker',
+          html:`<div class="marker-dot ${poi.type}">${ICONS[icon]||ICONS['map-pin']}</div>`,
+          iconSize:[30,30], iconAnchor:[15,15]
+        })
+      });
+      marker.on('click', () => openPOI(poi, park));
+      poiMarkers[poi.id] = { marker, poi, park };
+    });
+  });
+  applyFilters();
+}
+
+function iconFor(type){
+  return ({
+    sunrise:'sunrise', sunset:'sunset', cycling:'bike', running:'footprints',
+    sports:'volleyball', kids:'baby', parking:'parking-square', restroom:'bath'
+  })[type] || 'map-pin';
+}
+
+// ============ Filtering / visibility ============
+function applyFilters() {
+  const r = state.activeRoutineId ? state.routines.find(x=>x.id===state.activeRoutineId) : null;
+  const layerOn = state.activeLayers;
+
+  Object.values(poiMarkers).forEach(({marker, poi}) => {
+    let visible = false;
+    if (r) {
+      // Routine-scoped POIs
+      const poiIds = collectRoutinePoiIds(r);
+      visible = poiIds.has(poi.id);
+    } else {
+      // no routine: show nothing on-map for activity types (keep map clean); only facility layers
+      visible = false;
+    }
+    // facility layer toggle (parking/restroom) always visible when toggled
+    if (poi.type === 'parking' && layerOn.has('parking')) visible = true;
+    if (poi.type === 'restroom' && layerOn.has('restroom')) visible = true;
+
+    if (visible) {
+      if (!map.hasLayer(marker)) marker.addTo(map);
+      const el = marker.getElement();
+      if (el) el.classList.remove('dim');
+    } else {
+      if (map.hasLayer(marker)) map.removeLayer(marker);
+    }
+  });
+}
+
+function collectRoutinePoiIds(r){
+  const ids = new Set();
+  (r.entries||[]).forEach(e => e.poi_id && ids.add(e.poi_id));
+  (r.groups||[]).forEach(g => (g.entries||[]).forEach(e => e.poi_id && ids.add(e.poi_id)));
+  return ids;
+}
+
+// ============ Routines bar ============
+function renderRoutineBar(){
+  const bar = document.getElementById('routinesBar');
+  bar.innerHTML = '';
+  state.routines.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'r-chip';
+    btn.innerHTML = `<i data-icon="${routineIcon(r.id)}"></i>
+      <span class="zh">${r.name.zh}</span><span class="en">${r.name.en}</span>`;
+    btn.onclick = () => toggleRoutine(r.id);
+    bar.appendChild(btn);
+  });
+}
+function routineIcon(id){
+  return ({sunrise:'sunrise',sunset:'sunset',morning_run:'footprints',cycling:'bike'})[id] || 'sparkles';
+}
+
+function toggleRoutine(id){
+  if (state.activeRoutineId === id) {
+    closeRoutine();
+  } else {
+    state.activeRoutineId = id;
+    openRoutine(id);
+  }
+}
+
+function openRoutine(id){
+  const r = state.routines.find(x=>x.id===id);
+  document.querySelectorAll('.r-chip').forEach((c,i) => {
+    c.classList.toggle('active', state.routines[i].id === id);
+  });
+  document.body.classList.add('routine-open');
+  document.getElementById('overlay').classList.add('active');
+  document.getElementById('routinePanel').classList.add('open');
+  const titleEl = document.getElementById('rpTitle');
+  titleEl.innerHTML = `<i data-icon="${routineIcon(r.id)}"></i><span>${tr(r.name)}</span>`;
+  document.getElementById('rpDesc').textContent = tr(r.description);
+
+  const body = document.getElementById('rpBody');
+  body.innerHTML = '';
+  const sortFeatured = arr => [...arr].sort((a,b) => (b.featured?1:0) - (a.featured?1:0));
+  if (r.entries && r.entries.length) {
+    sortFeatured(r.entries).forEach(e => body.appendChild(renderRoutineEntry(e)));
+  }
+  if (r.groups) {
+    // crosspark group rendered first so 跨园路线 sits at the top of cycling
+    const ordered = [...r.groups].sort((a,b) => (a.id==='crosspark'?-1:0) - (b.id==='crosspark'?-1:0));
+    ordered.forEach(g => {
+      const h = document.createElement('div');
+      h.className = 'rp-group-title';
+      h.innerHTML = `<span class="zh">${g.name.zh}</span><span class="en">${g.name.en}</span>
+        <div style="font-weight:400;font-size:11px;text-transform:none;color:var(--stone);margin-top:2px;letter-spacing:0">${tr(g.description)}</div>`;
+      body.appendChild(h);
+      sortFeatured(g.entries||[]).forEach(e => body.appendChild(renderRoutineEntry(e)));
+    });
+  }
+  renderIcons();
+  applyFilters();
+  // fit bounds AFTER the panel finishes sliding and invalidateSize runs,
+  // otherwise Leaflet computes tile grid with the wrong container width.
+  setTimeout(() => { map.invalidateSize(); fitToRoutine(r); }, 460);
+}
+
+function renderRoutineEntry(e){
+  const wrap = document.createElement('div');
+  wrap.className = 'rp-item';
+  const park = state.parks.find(p => p.id === e.park_id);
+  let poi = null;
+  if (park && e.poi_id) poi = park.pois.find(x => x.id === e.poi_id);
+
+  const title = poi ? tr(poi.label) : (e.route_name ? tr(e.route_name) : '—');
+  const parkName = park ? tr(park.name) : '';
+  const why = e.why ? tr(e.why) : '';
+  const meta = e.meta || {};
+  const SURFACE = {paved:{zh:'水泥路',en:'paved'}, rubber:{zh:'塑胶跑道',en:'rubber track'},
+                   boardwalk:{zh:'木栈道',en:'boardwalk'}, trail:{zh:'山径',en:'trail'},
+                   stairs:{zh:'台阶',en:'stairs'}};
+  const DIFF = {easy:{zh:'休闲',en:'easy'}, medium:{zh:'中等',en:'medium'}, hard:{zh:'挑战',en:'hard'}};
+  const metaChips = [];
+  if (meta.distance_km) metaChips.push(`${meta.distance_km} km`);
+  if (meta.elevation_m) metaChips.push(`+${meta.elevation_m} m`);
+  if (meta.surface) metaChips.push(tr(SURFACE[meta.surface] || {zh:meta.surface, en:meta.surface}));
+  if (meta.difficulty) metaChips.push(tr(DIFF[meta.difficulty] || {zh:meta.difficulty, en:meta.difficulty}));
+
+  const featBadge = e.featured
+    ? `<span class="feat-badge" title="编辑精选"><i data-icon="sparkles"></i><span class="zh">精选</span><span class="en">Pick</span></span>`
+    : '';
+  const crossBadge = (e.osm_track || e.parks_covered)
+    ? `<span class="cross-badge"><span class="zh">跨园</span><span class="en">Cross-park</span></span>`
+    : '';
+  if (e.featured) wrap.classList.add('featured');
+  wrap.innerHTML = `
+    <div class="rp-item-head">
+      <div class="rp-item-name">${featBadge}${crossBadge}${title}</div>
+      <div class="rp-item-park">${parkName}</div>
+    </div>
+    <div class="rp-item-why">${why}</div>
+    ${metaChips.length?`<div class="rp-item-meta">${metaChips.map(c=>`<span>${c}</span>`).join('')}</div>`:''}
+  `;
+  wrap.onclick = () => {
+    if (poi && park) {
+      if (map.getZoom() < 15) map.setZoom(15, {animate:false});
+      openPOI(poi, park);
+    } else if (e.osm_track || e.route_name) {
+      // cross-park cycling entry: fit to its parks' bounds
+      const parks = (e.parks_covered||[]).map(id => state.parks.find(p=>p.id===id)).filter(Boolean);
+      if (parks.length) {
+        const b = L.latLngBounds(parks.map(p=>p.center));
+        map.fitBounds(b.pad(0.2));
+      }
+    }
+  };
+  return wrap;
+}
+
+function fitToRoutine(r){
+  const ids = collectRoutinePoiIds(r);
+  const pts = [];
+  ids.forEach(id => {
+    const m = poiMarkers[id];
+    if (m) pts.push(m.poi.coordinates);
+  });
+  if (pts.length >= 2) {
+    map.fitBounds(L.latLngBounds(pts).pad(0.25));
+  } else if (pts.length === 1) {
+    map.flyTo(pts[0], 15, {duration:0.6});
+  }
+}
+
+function closeRoutine(){
+  state.activeRoutineId = null;
+  document.querySelectorAll('.r-chip').forEach(c => c.classList.remove('active'));
+  document.body.classList.remove('routine-open');
+  document.getElementById('overlay').classList.remove('active');
+  document.getElementById('routinePanel').classList.remove('open');
+  setTimeout(() => map.invalidateSize(), 450);
+  applyFilters();
+}
+
+// Pan map so the target stays visible outside the card (bottom-right) and routine panel (left).
+function panIntoVisible(latLng){
+  const size = map.getSize();
+  const panelOpen = document.body.classList.contains('routine-open');
+  const isMobile = window.innerWidth <= 640;
+  // Left/right/bottom reserved for overlays
+  const leftReserved   = (panelOpen && !isMobile) ? Math.min(360, size.x * 0.88) : 0;
+  const rightReserved  = isMobile ? 0 : 384;   // 360 card + 24 margin
+  const bottomReserved = isMobile ? 260 : 340; // card roughly this tall
+  const topReserved    = 110;
+  const cx = (leftReserved + (size.x - rightReserved)) / 2;
+  const cy = (topReserved + (size.y - bottomReserved)) / 2;
+  const pt = map.latLngToContainerPoint(latLng);
+  const offset = [pt.x - cx, pt.y - cy];
+  map.panBy(offset, {animate:true, duration:0.5});
+}
+
+// ============ POI card ============
+function openPOI(poi, park){
+  state.activePoi = {poi, park};
+  // On mobile only one bottom-sheet at a time; close the routine panel so the card is visible.
+  if (window.innerWidth <= 640 && document.body.classList.contains('routine-open')) {
+    document.body.classList.remove('routine-open');
+    document.getElementById('overlay').classList.remove('active');
+    document.getElementById('routinePanel').classList.remove('open');
+  }
+  const card = document.getElementById('poiCard');
+  const badge = poi.data_status === 'unverified'
+    ? `<span class="data-badge" title="此 POI 描述由 LLM 生成，未经实地核验"><i data-icon="alert-triangle"></i>未核验</span>`
+    : '';
+  document.getElementById('cardType').innerHTML =
+    `<i data-icon="${iconFor(poi.type)}"></i>${tr(T[poi.type] || {zh:poi.type,en:poi.type})}`;
+  document.getElementById('cardTitle').innerHTML = tr(poi.label) + badge;
+  document.getElementById('cardPark').textContent = tr(park.name);
+  document.getElementById('cardTip').textContent = tr(poi.tip);
+
+  const meta = [];
+  if (poi.bestTime) meta.push(`<span><i data-icon="clock"></i>${tr(poi.bestTime)}</span>`);
+  if (poi.crowd) {
+    const c = poi.crowd;
+    const levelZh = {low:'人少',medium:'中等',high:'偏挤'}[c] || c;
+    const levelEn = {low:'Quiet',medium:'Medium',high:'Busy'}[c] || c;
+    meta.push(`<span><i data-icon="users"></i><span class="zh">${levelZh}</span><span class="en">${levelEn}</span></span>`);
+  }
+  document.getElementById('cardMeta').innerHTML = meta.join('');
+
+  // crowd pattern (from park level)
+  renderCrowd(park);
+
+  // stale button state
+  const btnStale = document.getElementById('btnStale');
+  btnStale.classList.toggle('stale-marked', state.staleMarked.has(poi.id));
+
+  card.classList.add('show');
+  document.body.classList.add('card-open');
+  renderIcons();
+
+  // highlight marker
+  Object.values(poiMarkers).forEach(({marker}) => {
+    const el = marker.getElement();
+    if (el) el.classList.remove('active');
+  });
+  const active = poiMarkers[poi.id];
+  if (active) {
+    const el = active.marker.getElement();
+    if (el) el.classList.add('active');
+  }
+
+  // make sure the POI isn't hidden behind the card / routine panel
+  panIntoVisible(poi.coordinates);
+}
+
+function renderCrowd(park){
+  const cp = park.crowdPattern;
+  const row = document.getElementById('crowdRow');
+  const source = document.getElementById('crowdSource');
+  source.textContent = tr(cp.source) + '（' + cp.verified_at + '）';
+
+  const dt = state.crowdDayType;
+  const data = cp[dt];
+  const slots = ['dawn','morning','noon','afternoon','evening'];
+  const now = currentSlot();
+
+  row.innerHTML = slots.map(s => {
+    const level = data[s] || 'low';
+    const isNow = (s === now);
+    const label = tr(LEVELS[level]);
+    return `<div class="crowd-cell ${level}${isNow?' now':''}" title="${s}">${label}</div>`;
+  }).join('');
+}
+
+function currentSlot(){
+  const h = new Date().getHours();
+  if (h >= 5 && h < 8) return 'dawn';
+  if (h >= 8 && h < 11) return 'morning';
+  if (h >= 11 && h < 14) return 'noon';
+  if (h >= 14 && h < 17) return 'afternoon';
+  if (h >= 17 && h < 20) return 'evening';
+  return null;
+}
+
+function closeCard(){
+  document.getElementById('poiCard').classList.remove('show');
+  document.body.classList.remove('card-open');
+  state.activePoi = null;
+  Object.values(poiMarkers).forEach(({marker}) => {
+    const el = marker.getElement();
+    if (el) el.classList.remove('active');
+  });
+}
+
+// ============ UI bindings ============
+function bindUI() {
+  document.getElementById('langBtn').onclick = () => {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    document.body.classList.toggle('lang-en', lang === 'en');
+    document.getElementById('langBtn').textContent = lang === 'zh' ? 'EN' : '中';
+    if (state.activePoi) openPOI(state.activePoi.poi, state.activePoi.park);
+    if (state.activeRoutineId) openRoutine(state.activeRoutineId);
+  };
+  document.getElementById('rpClose').onclick = closeRoutine;
+  document.getElementById('overlay').onclick = closeRoutine;
+  document.getElementById('cardClose').onclick = closeCard;
+  document.querySelectorAll('.layer-toggle').forEach(btn => {
+    const layer = btn.dataset.layer;
+    if (state.activeLayers.has(layer)) btn.classList.add('on');
+    btn.onclick = () => {
+      if (state.activeLayers.has(layer)) state.activeLayers.delete(layer);
+      else state.activeLayers.add(layer);
+      btn.classList.toggle('on');
+      if (layer === 'tracks') renderTracks();
+      else applyFilters();
+    };
+  });
+  document.querySelectorAll('.crowd-tab').forEach(tab => {
+    tab.onclick = () => {
+      state.crowdDayType = tab.dataset.daytype;
+      document.querySelectorAll('.crowd-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      if (state.activePoi) renderCrowd(state.activePoi.park);
+    };
+  });
+  document.getElementById('btnStale').onclick = () => {
+    if (!state.activePoi) return;
+    const id = state.activePoi.poi.id;
+    if (state.staleMarked.has(id)) state.staleMarked.delete(id);
+    else state.staleMarked.add(id);
+    localStorage.setItem('stale', JSON.stringify([...state.staleMarked]));
+    document.getElementById('btnStale').classList.toggle('stale-marked', state.staleMarked.has(id));
+  };
+  document.getElementById('btnNav').onclick = () => {
+    if (!state.activePoi) return;
+    const [lat,lng] = state.activePoi.poi.coordinates;
+    window.open(`https://uri.amap.com/marker?position=${lng},${lat}&name=${encodeURIComponent(tr(state.activePoi.poi.label))}`, '_blank');
+  };
+  // Search
+  const input = document.getElementById('searchInput');
+  input.addEventListener('input', e => {
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) return;
+    for (const park of state.parks) {
+      if (park.name.zh.toLowerCase().includes(q) || park.name.en.toLowerCase().includes(q)) {
+        map.flyTo(park.center, 15, {duration:0.6});
+        return;
+      }
+      for (const poi of park.pois) {
+        if (poi.label.zh.toLowerCase().includes(q) || poi.label.en.toLowerCase().includes(q)) {
+          map.flyTo(poi.coordinates, 16, {duration:0.6});
+          setTimeout(()=>openPOI(poi, park), 650);
+          return;
+        }
+      }
+    }
+  });
+
+  // Mobile: FAB toggles the layer panel
+  const fab = document.getElementById('layerFab');
+  const layerPanel = document.getElementById('layerPanel');
+  fab.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = layerPanel.classList.toggle('open');
+    fab.classList.toggle('on', open);
+  });
+  document.addEventListener('click', (e) => {
+    if (!layerPanel.classList.contains('open')) return;
+    if (layerPanel.contains(e.target) || fab.contains(e.target)) return;
+    layerPanel.classList.remove('open');
+    fab.classList.remove('on');
+  });
+
+  // Mobile: drag-down-to-close on bottom sheets
+  attachSheetDrag(document.getElementById('routinePanel'), closeRoutine);
+  attachSheetDrag(document.getElementById('poiCard'), closeCard);
+}
+
+function attachSheetDrag(el, onClose) {
+  const handle = el.querySelector('.sheet-handle');
+  if (!handle) return;
+  let startY = null, dy = 0;
+  const onStart = (y) => { startY = y; dy = 0; el.style.transition = 'none'; };
+  const onMove = (y) => {
+    if (startY == null) return;
+    dy = Math.max(0, y - startY);
+    el.style.transform = `translateY(${dy}px)`;
+  };
+  const onEnd = () => {
+    if (startY == null) return;
+    el.style.transition = '';
+    el.style.transform = '';
+    if (dy > 80) onClose();
+    startY = null; dy = 0;
+  };
+  handle.addEventListener('touchstart', e => onStart(e.touches[0].clientY), {passive:true});
+  handle.addEventListener('touchmove',  e => onMove(e.touches[0].clientY),  {passive:true});
+  handle.addEventListener('touchend',   onEnd);
+  handle.addEventListener('touchcancel',onEnd);
+}
+
+loadData().catch(err => {
+  console.error(err);
+  document.body.innerHTML = '<div style="padding:40px;font-family:sans-serif"><h2>加载失败</h2><p>请用 <code>python3 -m http.server</code> 等本地服务器打开（浏览器不允许 file:// 加载 JSON）。</p><pre>'+err+'</pre></div>';
+});
+</script>
+</body>
+</html>
